@@ -1,6 +1,7 @@
 import { AccessType, User } from "@prisma/client";
 import { UserRepository } from "../repositories/UserRepository";
 import bcrypt from 'bcrypt'
+import { RequiredParametersErros } from "../errors/RequiredParametersErros";
 
 
 interface AuthUseCaseRequest{
@@ -24,7 +25,7 @@ export class CreateUserUseCase{
     
       //Verificando se usuário já existe
       if(verifyUserExist){
-        throw new Error('User already exists')
+        throw new RequiredParametersErros("User already exists", 409)
       }
       
       // Hash Password
@@ -43,13 +44,12 @@ export class CreateUserUseCase{
       })
     
       if(!createUser){
-        throw new Error('Erro na criação do usuário')
+        throw new RequiredParametersErros("Erro na criação do usuário", 500)
       }
 
       return createUser
     }catch(err){
-      console.error(err)
-      throw new Error('Erro')
+      throw new RequiredParametersErros("Error", 500)
     }
   }
 }

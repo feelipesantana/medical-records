@@ -1,6 +1,7 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { z } from "zod";
 import { CreateUserFactory } from "../../use-cases/factory/UserFactory";
+import { RequiredParametersErros } from "../../errors/RequiredParametersErros";
 
 enum AccessType {
   ADMIN = 'ADMIN',
@@ -44,8 +45,12 @@ export function CreateUserController(request: FastifyRequest, reply: FastifyRepl
     })
 
     return reply.status(201).send(createUser)
-  } catch(err){
-    return reply.status(400).send({error: err})
+  } catch(error){
+    if (error instanceof RequiredParametersErros) {
+      reply.status(error.statusCode).send(error.message);
+    } else{
+      console.error(error)
+    }
   }
 
 
