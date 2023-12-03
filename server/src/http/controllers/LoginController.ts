@@ -1,6 +1,6 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import z from 'zod'
-import { AuthFactory } from "../use-cases/factory/AuthFactory";
+import { AuthFactory } from "../../use-cases/factory/AuthFactory";
 export async function LoginController(request:FastifyRequest, reply:FastifyReply){
   const createSchemaBody = z.object({
     username: z.string(),
