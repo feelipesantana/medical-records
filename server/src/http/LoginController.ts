@@ -19,7 +19,7 @@ export async function LoginController(request:FastifyRequest, reply:FastifyReply
 
   }catch(err){
     console.error(err)
-    return reply.status(500).send()
+    return reply.status(422).send("Usuário não encontrado, verifique usuário ou senha se está correto")
   }
 
 

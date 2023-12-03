@@ -10,7 +10,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum AcessType {
+enum AccessType {
   ADMIN
   DOCTOR
 }
@@ -24,7 +24,7 @@ model User {
   username       String        @unique
   password       String
   email          String
-  acessType      AcessType
+  accessType     AccessType
   Appointment    Appointment[]
 }
 
