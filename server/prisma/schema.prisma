@@ -21,8 +21,9 @@ model User {
   age            Int
   document       String
   securityNumber String        @unique
-  usename        String        @unique
+  username       String        @unique
   password       String
+  email          String
   acessType      AcessType
   Appointment    Appointment[]
 }
