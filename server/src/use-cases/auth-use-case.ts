@@ -1,6 +1,7 @@
 import { User } from "@prisma/client";
 import { UserRepository } from "../repositories/UserRepository";
 import {compare} from 'bcrypt'
+import { RequiredParametersErros } from "../errors/RequiredParametersErros";
 
 interface AuthUseCaseRequest{
   username:string;
@@ -12,18 +13,18 @@ export class AuthUseCase{
   constructor(private userRepository: UserRepository){}
   async execute({username,password}: AuthUseCaseRequest): Promise<AuthUSeCaseResponse>{
     
-    const user = await this.userRepository.findByUsername(username)
+    const findUser = await this.userRepository.findByUsername(username)
     
-    if(!user){
-      throw new Error('Usuário não encontrado, verifique usuário ou senha se está correto')
+    if(!findUser){
+      throw new RequiredParametersErros('Usuário não encontrado TEste, verifique usuário ou senha se está correto')
     }
 
-    const checkPassword = await compare(user.password, password)
+    const isPasswordValid = await compare(password, findUser.password)
     
-    if(!checkPassword){
-      throw new Error('Usuário não encontrado, verifique usuário ou senha se está correto')
+    if(!isPasswordValid){
+      throw new RequiredParametersErros('Usuário não encontrado, verifique usuário ou senha se está correto')
     }
 
-    return user
+    return findUser
   }
 }

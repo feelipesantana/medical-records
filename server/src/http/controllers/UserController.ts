@@ -1,6 +1,6 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { z } from "zod";
-import { CreateUserFactory } from "../../use-cases/factory/UserFactory";
+import { CreateUserFactory } from "../../use-cases/factory/user-factory";
 import { RequiredParametersErros } from "../../errors/RequiredParametersErros";
 
 enum AccessType {
@@ -23,7 +23,7 @@ export async function CreateUserController(request: FastifyRequest, reply: Fasti
     if (confirmPassword !== password) {
       ctx.addIssue({
         code: "custom",
-        message: "The passwords did not match"
+        message: "As senhas não conferem"
       });
     }
   });
