@@ -7,7 +7,7 @@ enum AccessType {
   ADMIN = 'ADMIN',
   DOCTOR = 'DOCTOR'
 }
-export function CreateUserController(request: FastifyRequest, reply: FastifyReply){
+export async function CreateUserController(request: FastifyRequest, reply: FastifyReply){
 
   const createUserSchemaBody = z.object({
     name: z.string().max(50),
@@ -32,7 +32,7 @@ export function CreateUserController(request: FastifyRequest, reply: FastifyRepl
   try{
     const userFactory = CreateUserFactory()
     
-    const createUser = userFactory.execute({
+    const createUser = await userFactory.execute({
       name,
       age,
       email,
@@ -43,15 +43,13 @@ export function CreateUserController(request: FastifyRequest, reply: FastifyRepl
       password:confirmPassword
       
     })
-
     return reply.status(201).send(createUser)
-  } catch(error){
+  }catch(error){
     if (error instanceof RequiredParametersErros) {
-      reply.status(error.statusCode).send(error.message);
-    } else{
-      console.error(error)
+      return reply.status(error.statusCode).send({ error: error.message });
     }
-  }
 
+    return reply.status(500).send({ error: 'Erro interno do servidor' }); 
+  }
 
 }

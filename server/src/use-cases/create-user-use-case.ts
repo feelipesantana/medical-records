@@ -16,11 +16,12 @@ interface AuthUseCaseRequest{
 }
 
 type AuthUSeCaseResponse =  User
+
 export class CreateUserUseCase{
   constructor(private userRepository: UserRepository){}
   async execute(data: AuthUseCaseRequest): Promise<AuthUSeCaseResponse>{
     
-    try{
+    
       const verifyUserExist = await this.userRepository.findByUsername(data.username)
     
       //Verificando se usuário já existe
@@ -48,8 +49,6 @@ export class CreateUserUseCase{
       }
 
       return createUser
-    }catch(err){
-      throw new RequiredParametersErros("Error", 500)
-    }
+    
   }
 }
