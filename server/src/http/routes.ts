@@ -1,18 +1,26 @@
-import { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
-import { LoginController } from "./controllers/LoginController";
-import { CreateUserController } from "./controllers/UserController";
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
+import {
+  type FastifyInstance,
+  type FastifyReply,
+  type FastifyRequest
+} from 'fastify'
+import { LoginController } from './controllers/LoginController'
+import { CreateUserController } from './controllers/UserController'
 
-export async function appRoutes(app: FastifyInstance){
-  app.post("/auth/login", LoginController)
-  app.post("/register", CreateUserController)
-  //{ preHandler: checkToken }
-  function checkToken(request: FastifyRequest, reply: FastifyReply){
-    const authHeader = request.headers['authorization']
-    const token = authHeader && authHeader.split(' ')[1]
+export async function appRoutes (app: FastifyInstance) {
+  // Routes
+  app.post('/auth/login', LoginController)
+  app.post('/register', CreateUserController)
+  app.post('/appointment', CreateUserController)
 
-    if(!token){
-      return  reply.status(401).send({ msg: 'Acesso negado' })
-      
+  // { preHandler: checkToken }
+
+  async function checkToken (request: FastifyRequest, reply: FastifyReply) {
+    const authHeader = request.headers.authorization
+    const token: string | undefined = authHeader?.split(' ')[1]
+
+    if (token === undefined) {
+      return await reply.status(401).send({ msg: 'Acesso negado' })
     }
   }
 }
