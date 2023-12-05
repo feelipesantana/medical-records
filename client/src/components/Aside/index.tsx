@@ -6,7 +6,7 @@ export function Aside() {
   return (
     <aside className="w-96 border border-l-blue-default flex flex-col items-center p-4">
       <div>
-        <Image src="/assets/logo-2.png" alt="logo" width={100} height={100} />
+        <Image src="/assets/logo.png" alt="logo" width={200} height={200} />
       </div>
 
       <DateCalendar className="mt-10" />
