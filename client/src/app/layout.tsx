@@ -1,9 +1,13 @@
 import type { Metadata } from "next";
 import { Inter, Lato, Poppins } from "next/font/google";
 import "./globals.css";
+import { AppProvider } from "@/providers";
 
 const inter = Inter({ subsets: ["latin"] });
-const lato = Lato({ subsets: ["latin"], weight: "400" });
+const lato = Poppins({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "900"],
+});
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -17,7 +21,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={lato.className}>{children}</body>
+      <body className={lato.className}>
+        <AppProvider>{children}</AppProvider>
+      </body>
     </html>
   );
 }
