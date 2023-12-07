@@ -17,4 +17,20 @@ export class PrismaAppointmentRepositor implements AppointmentRepository {
 
     return createAppointment
   }
+
+  async findAll (): Promise<Appointment[] | null> {
+    const findAllAppointments = await prisma.appointment.findMany()
+
+    return findAllAppointments
+  }
+
+  async findByDate (date: string): Promise<Appointment[] | null> {
+    const findManyAppointmentByDate = await prisma.appointment.findMany({
+      where: {
+        date
+      }
+    })
+
+    return findManyAppointmentByDate
+  }
 }

@@ -1,9 +1,9 @@
 import { type FastifyReply, type FastifyRequest } from 'fastify'
 import { z } from 'zod'
-import { AppointmentFactory } from '../../use-cases/factory/appointment-factory'
+import { CreateAppointmentFactory, FindAllAppointmentFactory } from '../../use-cases/factory/appointment-factory'
 import { RequiredParametersErros } from '../../errors/RequiredParametersErros'
 
-export async function AppointmentController (request: FastifyRequest, reply: FastifyReply) {
+export async function CreateAppointmentController (request: FastifyRequest, reply: FastifyReply) {
   const createSchemaBody = z.object({
     date: z.date(),
     startTime: z.string(),
@@ -15,7 +15,7 @@ export async function AppointmentController (request: FastifyRequest, reply: Fas
 
   const { date, startTime, endTime, patientId, patientName, userId } = createSchemaBody.parse(request.body)
   try {
-    const appointmentFactory = AppointmentFactory()
+    const appointmentFactory = CreateAppointmentFactory()
 
     const createAppointment = await appointmentFactory.execute({
       date,
@@ -29,5 +29,17 @@ export async function AppointmentController (request: FastifyRequest, reply: Fas
     return await reply.status(201).send(createAppointment)
   } catch (error) {
     throw new RequiredParametersErros('Error')
+  }
+}
+
+export async function FindAllAppointmentController (request: FastifyRequest, reply: FastifyReply) {
+  try {
+    const appointmentFactory = FindAllAppointmentFactory()
+
+    const findAllAppointment = await appointmentFactory.execute()
+
+    return await reply.status(200).send(findAllAppointment)
+  } catch (error) {
+    throw new RequiredParametersErros('Error', 500)
   }
 }

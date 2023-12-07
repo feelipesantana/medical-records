@@ -6,12 +6,15 @@ import {
 } from 'fastify'
 import { LoginController } from './controllers/LoginController'
 import { CreateUserController } from './controllers/UserController'
+import { CreateAppointmentController, FindAllAppointmentController } from './controllers/AppointmentController'
 
 export async function appRoutes (app: FastifyInstance) {
   // Routes
   app.post('/auth/login', LoginController)
   app.post('/register', CreateUserController)
-  app.post('/appointment', CreateUserController)
+  app.post('/appointment', CreateAppointmentController)
+
+  app.get('/appointment', FindAllAppointmentController)
 
   // { preHandler: checkToken }
 
