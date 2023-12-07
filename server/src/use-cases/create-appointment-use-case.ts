@@ -3,7 +3,7 @@ import { type AppointmentRepository } from '../repositories/AppointmentRepositor
 import { RequiredParametersErros } from '../errors/RequiredParametersErros'
 
 interface CreateAppointmentUseCaseRequest {
-  date: Date
+  date: string
   startTime: string
   endTime: string
   userId: string
@@ -16,8 +16,11 @@ type CreateAppointmentUseCaseResponse = Appointment
 export class CreateAppointmentUseCase {
   constructor (private readonly appointmentRepository: AppointmentRepository) {}
   async execute (data: CreateAppointmentUseCaseRequest): Promise<CreateAppointmentUseCaseResponse> {
+    const newDateReceived = new Date(data.date)
+    console.log(newDateReceived)
+
     const createAppointment = await this.appointmentRepository.create({
-      date: data.date,
+      date: newDateReceived,
       startTime: data.startTime,
       endTime: data.endTime,
       userId: data.userId,

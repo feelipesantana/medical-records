@@ -5,7 +5,7 @@ import { RequiredParametersErros } from '../../errors/RequiredParametersErros'
 
 export async function CreateAppointmentController (request: FastifyRequest, reply: FastifyReply) {
   const createSchemaBody = z.object({
-    date: z.date(),
+    date: z.string(),
     startTime: z.string(),
     endTime: z.string(),
     userId: z.string(),
@@ -17,6 +17,7 @@ export async function CreateAppointmentController (request: FastifyRequest, repl
   try {
     const appointmentFactory = CreateAppointmentFactory()
 
+    console.log('chegou aqui', date)
     const createAppointment = await appointmentFactory.execute({
       date,
       startTime,
