@@ -11,9 +11,9 @@ import Timeline from "@mui/lab/Timeline";
 
 export function TimeLine() {
   return (
-    <div className="w-full h-full">
+    <div className="w-full h-full ">
       <Timeline className=" w-full h-full flex flex-col gap-8">
-        <TimelineItem className="flex gap-4">
+        <TimelineItem className="flex gap-4 w-full">
           <TimelineOppositeContent
             color="textSecondary"
             className="text-xl font-semibold bg-slate-200 h-16 rounded-[4px] flex items-center justify-center flex-col max-w-[8rem]  "

@@ -4,6 +4,8 @@ import { prisma } from '../../lib/prisma'
 
 export class PrismaAppointmentRepositor implements AppointmentRepository {
   async create (data: Prisma.AppointmentUncheckedCreateInput): Promise<Appointment> {
+    console.log('OLA')
+    console.log(data)
     const createAppointment = await prisma.appointment.create({
       data: {
         date: data.date,
@@ -11,7 +13,8 @@ export class PrismaAppointmentRepositor implements AppointmentRepository {
         endTime: data.endTime,
         userId: data.userId,
         patientId: data.patientId,
-        patientName: data.patientName
+        patientName: data.patientName,
+        description: data.description
       }
     })
 

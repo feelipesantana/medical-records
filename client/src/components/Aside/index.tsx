@@ -3,16 +3,25 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { Calendar } from "@/components/ui/calendar";
 import { format, parse } from "date-fns";
+import { api } from "@/services/api";
 
 export function Aside() {
   const [date, setDate] = useState<Date | undefined>(new Date());
+  const [appointments, setAppointments] = useState();
 
-  useEffect(() => {
+  async function getAppointmentByDate() {
     if (date) {
       const dataFormatada = format(new Date(date), "yyyy-MM-dd");
-      console.log(dataFormatada);
+      try {
+        const response = await api.get("/appointment");
+        const result = response.data;
+
+        console.log(result);
+      } catch (err) {
+        console.error(err);
+      }
     }
-  }, [date]);
+  }
   return (
     <aside className="w-96 border border-l-blue-default flex flex-col items-center py-4  ">
       <div className="border-b-2 border-slate-200 w-full mb-10">
@@ -29,6 +38,7 @@ export function Aside() {
         selected={date}
         onSelect={setDate}
         className="rounded-md border"
+        onDayClick={getAppointmentByDate}
       />
     </aside>
   );

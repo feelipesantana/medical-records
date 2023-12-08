@@ -37,6 +37,6 @@ model Appointment {
   userId      String
   patientId   String
   patientName String
-
-  createdAt DateTime @default(now())
+  description String
+  createdAt   DateTime @default(now())
 }

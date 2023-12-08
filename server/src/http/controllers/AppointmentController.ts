@@ -10,10 +10,11 @@ export async function CreateAppointmentController (request: FastifyRequest, repl
     endTime: z.string(),
     userId: z.string(),
     patientId: z.string(),
-    patientName: z.string()
+    patientName: z.string(),
+    description: z.string()
   })
 
-  const { date, startTime, endTime, patientId, patientName, userId } = createSchemaBody.parse(request.body)
+  const { date, startTime, endTime, patientId, patientName, userId, description } = createSchemaBody.parse(request.body)
   try {
     const appointmentFactory = CreateAppointmentFactory()
 
@@ -24,7 +25,8 @@ export async function CreateAppointmentController (request: FastifyRequest, repl
       endTime,
       userId,
       patientId,
-      patientName
+      patientName,
+      description
     })
 
     return await reply.status(201).send(createAppointment)

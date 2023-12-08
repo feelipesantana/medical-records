@@ -9,6 +9,7 @@ interface CreateAppointmentUseCaseRequest {
   userId: string
   patientId: string
   patientName: string
+  description: string
 }
 
 type CreateAppointmentUseCaseResponse = Appointment
@@ -25,7 +26,8 @@ export class CreateAppointmentUseCase {
       endTime: data.endTime,
       userId: data.userId,
       patientId: data.patientId,
-      patientName: data.patientName
+      patientName: data.patientName,
+      description: data.description
     })
 
     if (!createAppointment) {

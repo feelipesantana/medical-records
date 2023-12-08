@@ -1,10 +1,11 @@
 import { LinkMenu } from "@/components/LinkMenu";
-import { Bell } from "lucide-react";
+import { Bell, ChevronDown } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { Aside } from "@/components/Aside";
 import { Menu } from "@/components/Menu";
 import { Profile } from "@/components/Profile";
+import { GetPatientSearch } from "@/components/GetPatientSearch";
 
 export default function CMSLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -14,9 +15,14 @@ export default function CMSLayout({ children }: { children: React.ReactNode }) {
         <header className="flex flex-col  px-14 ">
           <div className="flex justify-between items-center bg-white h-24">
             <Menu />
-            <div className="flex items-center justify-center gap-4">
-              <Bell />
-              <Profile />
+
+            <div className="flex items-center justify-center gap-6">
+              <GetPatientSearch />
+              <Bell className="text-blue-default " />
+              <div className="flex items-center justify-center gap-1">
+                <Profile />
+                <ChevronDown className="text-blue-default " />
+              </div>
             </div>
           </div>
         </header>
