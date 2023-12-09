@@ -4,19 +4,31 @@ import { useEffect, useState } from "react";
 import { Calendar } from "@/components/ui/calendar";
 import { format, parse } from "date-fns";
 import { api } from "@/services/api";
+import { AppointmentType } from "@/types/AppointmentType";
+import { useAppointmentFiltered } from "@/hook/useAppointmentsFiltered";
 
 export function Aside() {
   const [date, setDate] = useState<Date | undefined>(new Date());
-  const [appointments, setAppointments] = useState();
-
+  const { setAppointmentsFiltered } = useAppointmentFiltered();
   async function getAppointmentByDate() {
     if (date) {
-      const dataFormatada = format(new Date(date), "yyyy-MM-dd");
+      const dateFormatted = format(
+        new Date(date),
+        "yyyy-MM-dd'T'00:00:00.000'Z'"
+      );
+
       try {
         const response = await api.get("/appointment");
-        const result = response.data;
+        const result = await response.data;
 
-        console.log(result);
+        if (result) {
+          const filterAppointmentsByDate = result.filter(
+            (appointment: AppointmentType) => appointment.date === dateFormatted
+          );
+
+          console.log(filterAppointmentsByDate);
+          setAppointmentsFiltered(filterAppointmentsByDate);
+        }
       } catch (err) {
         console.error(err);
       }
