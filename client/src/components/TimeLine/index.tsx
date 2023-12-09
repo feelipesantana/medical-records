@@ -25,8 +25,7 @@ export function TimeLine() {
                 color="textSecondary"
                 className="text-xl font-semibold bg-slate-200 h-16 rounded-[4px] flex items-center justify-center flex-col max-w-[8rem]  "
               >
-                <span>{res.date} </span>
-                <span>am</span>
+                <span>{res.startTime} </span>
               </TimelineOppositeContent>
               <TimelineSeparator>
                 <TimelineDot />

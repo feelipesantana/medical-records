@@ -34,6 +34,10 @@ export function Aside() {
       }
     }
   }
+
+  useEffect(() => {
+    getAppointmentByDate();
+  }, [date]);
   return (
     <aside className="w-96 border border-l-blue-default flex flex-col items-center py-4  ">
       <div className="border-b-2 border-slate-200 w-full mb-10">
@@ -50,7 +54,6 @@ export function Aside() {
         selected={date}
         onSelect={setDate}
         className="rounded-md border"
-        onDayClick={getAppointmentByDate}
       />
     </aside>
   );
