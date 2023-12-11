@@ -1,11 +1,12 @@
 "use client";
 import { Button, TextField } from "@mui/material";
 import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { FieldValues, useForm } from "react-hook-form";
 import z from "zod";
 
 const schemaFormZod = z.object({
-  username: z.string().nonempty("Username não pode estar vazio"),
+  email: z.string().nonempty("Username não pode estar vazio"),
   password: z.string().nonempty("Senha não pode estar vazio"),
 });
 
@@ -13,20 +14,27 @@ type FormValues = z.infer<typeof schemaFormZod>;
 
 export default function Login() {
   const { handleSubmit, register } = useForm<FormValues>();
+  const { replace } = useRouter();
 
   async function handleAuth(data: FormValues) {
     const validateDatas = schemaFormZod.parse(data);
 
     if (validateDatas) {
+      // setIsLoading(true);
       console.log(validateDatas);
-    }
+      const result = await signIn("credentials", {
+        email: validateDatas.email,
+        password: validateDatas.password,
+        redirect: false,
+      });
 
-    // setIsLoading(true);
-    // const result = await signIn("credentials", {
-    //   email,
-    //   password,
-    //   redirect: false,
-    // });
+      if (result?.error) {
+        console.log(result);
+        return;
+      }
+      replace("/cms");
+      console.log(result);
+    }
     // if (result?.error) {
     //   setIsLoading(false);
     //   setError(true);
@@ -47,15 +55,15 @@ export default function Login() {
       <form className="flex flex-col gap-4" onSubmit={handleSubmit(handleAuth)}>
         <TextField
           id="outlined-basic"
-          label="Usuário"
+          label="email"
           size="medium"
           variant="outlined"
           className="w-[20rem]"
-          {...register("username")}
+          {...register("email")}
         />
         <TextField
           id="outlined-basic"
-          label="Senha"
+          label="password"
           size="medium"
           variant="outlined"
           className="w-[20rem]"

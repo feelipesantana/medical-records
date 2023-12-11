@@ -27,51 +27,59 @@ const nextAuthOptions: NextAuthOptions = {
       },
 
       async authorize(credentials, req){
+        console.log(credentials)
         const response = await api.post('/auth', {
           email: credentials?.email,
           password: credentials?.password
         });
         const user = await response.data
 
+        console.log(user)
         if(user){
-          return {...user}
+          return user
         }
         return null
       }
     })
 
   ],
-  secret: process.env.NEXTAUTH_SECRET,
-
   pages: {
     signIn: '/'
   },
+  secret: process.env.NEXTAUTH_SECRET,
 
-  callbacks:{
-   async jwt({token, user}) {
-      user && (token.user = user)
-      return token
+  callbacks: {
+    async session({session, token}) {
+      // Você pode personalizar a lógica de sessão aqui, se necessário
+      return session;
     },
-    async session({session, token}){
+  },
 
-      if (token?.user) {
 
-        session.user = token.user;
-      }
-      return session
-    },
-    async signIn({ account, user,credentials}){
-      if(account?.provider === 'credentials'){
+    // async jwt({token, user}) {
+    //   user && (token.user = user)
+    //   return token
+    // },
+    // async session({session, token}){
 
-        if(user){
-          // cookies().set('user_token', user.token)
-          // cookies().set('site_count',  user.site_count)
+    //   if (token?.user) {
 
-          // const lgn= user.user.language.split('-');
-          // cookies().set('language', lgn[0])
-        }
+    //     session.user = token.user;
+    //   }
+    //   return session
+    // },
+    // async signIn({ account, user,credentials}){
+    //   if(account?.provider === 'credentials'){
 
-      }
+    //     if(user){
+    //       // cookies().set('user_token', user.token)
+    //       // cookies().set('site_count',  user.site_count)
+
+    //       // const lgn= user.user.language.split('-');
+    //       // cookies().set('language', lgn[0])
+    //     }
+
+    //   }
       // if(account?.provider === "google"){
       //   try {
       //     const response = await api.post('/authGoogle', {
@@ -107,9 +115,9 @@ const nextAuthOptions: NextAuthOptions = {
       //     throw new Error('Falha na autenticação');
       //   }
       // }
-      return true
-    },
-  }
+      // return true
+    
+  
 }
 const handler = NextAuth(nextAuthOptions)
 export { handler as GET, handler as POST, nextAuthOptions}
