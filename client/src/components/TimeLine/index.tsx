@@ -32,7 +32,7 @@ export function TimeLine() {
                 <TimelineConnector className="h-20" />
               </TimelineSeparator>
               <TimelineContent className="text-base p-6 border bg-white flex flex-1 items-center justify-center  w-full min-h-16">
-                {res.description}
+                {res.patientName}
               </TimelineContent>
             </TimelineItem>
           );
