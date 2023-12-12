@@ -46,3 +46,15 @@ export async function FindAllAppointmentController (request: FastifyRequest, rep
     throw new RequiredParametersErros('Error', 500)
   }
 }
+
+export async function FindByDateAppointmentController (request: FastifyRequest, reply: FastifyReply) {
+  try {
+    const appointmentFactory = FindAllAppointmentFactory()
+
+    const findAllAppointment = await appointmentFactory.execute()
+
+    return await reply.status(200).send(findAllAppointment)
+  } catch (error) {
+    throw new RequiredParametersErros('Error', 500)
+  }
+}

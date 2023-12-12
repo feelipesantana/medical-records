@@ -3,16 +3,17 @@ import z from 'zod'
 import { AuthFactory } from '../../use-cases/factory/auth-factory'
 export async function LoginController (request: FastifyRequest, reply: FastifyReply) {
   const createSchemaBody = z.object({
-    username: z.string(),
+    email: z.string(),
     password: z.string()
   })
 
-  const { username, password } = createSchemaBody.parse(request.body)
+  const { email, password } = createSchemaBody.parse(request.body)
 
   try {
     const authFactory = AuthFactory()
 
-    const findUser = await authFactory.execute({ username, password })
+    console.log(email, password)
+    const findUser = await authFactory.execute({ email, password })
 
     return await reply.status(200).send(findUser)
   } catch (err) {

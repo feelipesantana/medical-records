@@ -19,7 +19,7 @@ type AuthUSeCaseResponse = User
 export class CreateUserUseCase {
   constructor (private readonly userRepository: UserRepository) {}
   async execute (data: AuthUseCaseRequest): Promise<AuthUSeCaseResponse> {
-    const verifyUserExist = await this.userRepository.findByUsername(data.username)
+    const verifyUserExist = await this.userRepository.findByEmail(data.email)
 
     // Verifying if User Exists
     if (verifyUserExist) {
@@ -41,7 +41,7 @@ export class CreateUserUseCase {
       password: passwordHash
     })
 
-    if (createUser) {
+    if (!createUser) {
       throw new RequiredParametersErros('Erro na criação do usuário', 500)
     }
 

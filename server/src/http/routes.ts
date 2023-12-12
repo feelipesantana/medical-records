@@ -10,7 +10,7 @@ import { CreateAppointmentController, FindAllAppointmentController } from './con
 
 export async function appRoutes (app: FastifyInstance) {
   // Routes
-  app.post('/auth/login', LoginController)
+  app.post('/auth', LoginController)
   app.post('/register', CreateUserController)
   app.post('/appointment', CreateAppointmentController)
 

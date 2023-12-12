@@ -29,13 +29,13 @@ export class PrismaUserRepository implements UserRepository {
     return findUser
   }
 
-  async findByUsername (username: string) {
-    const findUsername = await prisma.user.findUnique({
+  async findByEmail (email: string) {
+    const findEmail = await prisma.user.findUnique({
       where: {
-        username
+        email
       }
     })
 
-    return findUsername
+    return findEmail
   }
 }

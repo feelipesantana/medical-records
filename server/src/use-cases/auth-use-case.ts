@@ -4,7 +4,7 @@ import { compare } from 'bcrypt'
 import { RequiredParametersErros } from '../errors/RequiredParametersErros'
 
 interface AuthUseCaseRequest {
-  username: string
+  email: string
   password: string
 }
 
@@ -12,14 +12,14 @@ type AuthUSeCaseResponse = User
 export class AuthUseCase {
   constructor (private readonly userRepository: UserRepository) {}
   async execute ({
-    username,
+    email,
     password
   }: AuthUseCaseRequest): Promise<AuthUSeCaseResponse> {
-    const findUser = await this.userRepository.findByUsername(username)
+    const findUser = await this.userRepository.findByEmail(email)
 
     if (!findUser) {
       throw new RequiredParametersErros(
-        'Usuário não encontrado TEste, verifique usuário ou senha se está correto'
+        'Usuário não encontrado, verifique usuário ou senha se está correto'
       )
     }
 
