@@ -6,8 +6,20 @@ import { Aside } from "@/components/Aside";
 import { Menu } from "@/components/Menu";
 import { Profile } from "@/components/Profile";
 import { GetPatientSearch } from "@/components/GetPatientSearch";
+import { getServerSession } from "next-auth";
+import { nextAuthOptions } from "../api/auth/[...nextauth]/route";
+import { redirect } from "next/navigation";
 
-export default function CMSLayout({ children }: { children: React.ReactNode }) {
+export default async function CMSLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const session = await getServerSession(nextAuthOptions);
+
+  if (!session) {
+    redirect("/");
+  }
   return (
     <div className="flex h-screen">
       <Aside />

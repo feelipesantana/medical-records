@@ -1,10 +1,19 @@
+import { getServerSession } from "next-auth";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
+import { redirect } from "next/navigation";
+import { nextAuthOptions } from "../api/auth/[...nextauth]/route";
 
-export default function LoginLayout({
+export default async function LoginLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const session = await getServerSession(nextAuthOptions);
+
+  if (session) {
+    redirect("/cms");
+  }
   return (
     <main className="flex justify-between bg-blue-50 h-screen w-screen">
       <section className="flex flex-col h-screen w-full  items-center justify-center">
