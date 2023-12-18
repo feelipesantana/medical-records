@@ -34,8 +34,8 @@ const nextAuthOptions: NextAuthOptions = {
         });
         const user = await response.data
 
-        console.log(user)
         if(user){
+
           return user
         }
         return null

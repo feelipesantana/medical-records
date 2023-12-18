@@ -21,7 +21,7 @@ export default function Login() {
 
     if (validateDatas) {
       // setIsLoading(true);
-      console.log(validateDatas);
+      console.log("TESTE", validateDatas);
       const result = await signIn("credentials", {
         email: validateDatas.email,
         password: validateDatas.password,
