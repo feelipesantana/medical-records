@@ -17,6 +17,7 @@ export class AuthUseCase {
   }: AuthUseCaseRequest): Promise<AuthUSeCaseResponse> {
     const findUser = await this.userRepository.findByEmail(email)
 
+    console.log('HELLo', findUser)
     if (!findUser) {
       throw new RequiredParametersErros(
         'Usuário não encontrado, verifique usuário ou senha se está correto'
@@ -26,6 +27,7 @@ export class AuthUseCase {
     // Check Both Pass
     const isPasswordValid = await compare(password, findUser.password)
 
+    console.log(isPasswordValid)
     if (!isPasswordValid) {
       throw new RequiredParametersErros(
         'Usuário não encontrado, verifique usuário ou senha se está correto'
