@@ -1,7 +1,7 @@
-import { type Appointment, type Prisma } from '@prisma/client'
+import { type Appointment } from '../entities/appointment'
 
 export interface AppointmentRepository {
-  create: (data: Prisma.AppointmentUncheckedCreateInput) => Promise<Appointment>
+  create: (data: Appointment) => Promise<Appointment>
   findAll: () => Promise<Appointment[] | null>
-  findByDate: (date: string) => Promise<Appointment[] | null>
+  // findByDate: (date: string) => Promise<Appointment[] | null>
 }

@@ -3,10 +3,9 @@ import { type AppointmentRepository } from '../repositories/AppointmentRepositor
 import { RequiredParametersErros } from '../errors/RequiredParametersErros'
 
 interface CreateAppointmentUseCaseRequest {
-  date: string
-  startTime: string
-  endTime: string
-  userId: string
+  startTime: Date
+  endTime: Date
+  doctorId: string
   patientId: string
   patientName: string
   description: string
@@ -21,10 +20,9 @@ export class CreateAppointmentUseCase {
     console.log(newDateReceived)
 
     const createAppointment = await this.appointmentRepository.create({
-      date: newDateReceived,
       startTime: data.startTime,
       endTime: data.endTime,
-      userId: data.userId,
+      userId: data.doctorId,
       patientId: data.patientId,
       patientName: data.patientName,
       description: data.description
