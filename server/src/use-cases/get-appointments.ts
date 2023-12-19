@@ -4,8 +4,9 @@ import { RequiredParametersErros } from '../errors/RequiredParametersErros'
 
 type CreateAppointmentUseCaseResponse = Appointment[]
 
-export class FindAllAppointmentUseCase {
+export class GetAppointmentsUseCase {
   constructor (private readonly appointmentRepository: AppointmentRepository) {}
+
   async execute (): Promise<CreateAppointmentUseCaseResponse> {
     const findAllAppointment = await this.appointmentRepository.findAll()
 

@@ -1,7 +1,7 @@
 import { type FastifyReply, type FastifyRequest } from 'fastify'
 import z from 'zod'
-import { AuthFactory } from '../../use-cases/factory/auth-factory'
-export async function LoginController (request: FastifyRequest, reply: FastifyReply) {
+import { makeAuthenticate } from '../../use-cases/factory/make-authenticate'
+export async function authenticateController (request: FastifyRequest, reply: FastifyReply) {
   const createSchemaBody = z.object({
     email: z.string(),
     password: z.string()
@@ -10,7 +10,7 @@ export async function LoginController (request: FastifyRequest, reply: FastifyRe
   const { email, password } = createSchemaBody.parse(request.body)
 
   try {
-    const authFactory = AuthFactory()
+    const authFactory = makeAuthenticate()
 
     console.log(email, password)
     const findUser = await authFactory.execute({ email, password })

@@ -9,7 +9,7 @@ interface AuthUseCaseRequest {
 }
 
 type AuthUSeCaseResponse = User
-export class AuthUseCase {
+export class AuthenticateUseCase {
   constructor (private readonly userRepository: UserRepository) {}
   async execute ({
     email,

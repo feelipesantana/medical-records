@@ -1,13 +1,13 @@
 import { type FastifyReply, type FastifyRequest } from 'fastify'
 import { z } from 'zod'
-import { CreateUserFactory } from '../../use-cases/factory/user-factory'
+import { makeCreateUser } from '../../use-cases/factory/make-create-user'
 import { RequiredParametersErros } from '../../errors/RequiredParametersErros'
 
 enum AccessType {
   ADMIN = 'ADMIN',
   DOCTOR = 'DOCTOR'
 }
-export async function CreateUserController (request: FastifyRequest, reply: FastifyReply) {
+export async function createUserController (request: FastifyRequest, reply: FastifyReply) {
   const createUserSchemaBody = z.object({
     name: z.string().max(50),
     email: z.string().email(),
@@ -29,7 +29,7 @@ export async function CreateUserController (request: FastifyRequest, reply: Fast
 
   const { name, age, email, document, securityNumber, accessType, username, confirmPassword } = createUserSchemaBody.parse(request.body)
   try {
-    const userFactory = CreateUserFactory()
+    const userFactory = makeCreateUser()
 
     const createUser = await userFactory.execute({
       name,

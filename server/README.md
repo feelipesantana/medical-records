@@ -10,6 +10,7 @@ Medical Records
 - [ ] Deve ser possível que o médico crie uma consulta
 - [ ] Deve ser possível obter os dados do médico
 - [ ] Deve ser possível obter dados de um paciente existente no banco
+- [ ] Deve ser possível obter as consultas por data
 - [ ] Deve ser possível obter o histórico do prontuário do paciente
 
 ## RN  (REGRAS DE NEGOCIO)

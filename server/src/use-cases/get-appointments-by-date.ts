@@ -8,7 +8,7 @@ interface GetAppointmentsDateRequest {
 
 type GetAppointmentsDateResponse = Appointment[]
 
-export class GetAppointmentsDate {
+export class getAppointmentsByDateUseCase {
   constructor (private readonly appointmentRepository: AppointmentRepository) {}
 
   async execute ({ date }: GetAppointmentsDateRequest): Promise<GetAppointmentsDateResponse> {
