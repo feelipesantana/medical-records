@@ -1,7 +1,7 @@
 import { type User } from '@prisma/client'
 import { type UserRepository } from '../repositories/UserRepository'
 import { compare } from 'bcrypt'
-import { RequiredParametersErros } from '../errors/RequiredParametersErros'
+import { RequiredParametersErros } from '../errors/user-already-existed-error'
 
 interface AuthUseCaseRequest {
   email: string

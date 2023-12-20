@@ -1,16 +1,14 @@
-import { type Appointment, type Prisma } from '@prisma/client'
 import { type AppointmentRepository } from '../AppointmentRepository'
 import { prisma } from '../../lib/prisma'
+import { type Prisma, type Appointment } from '@prisma/client'
 
 export class PrismaAppointmentRepositor implements AppointmentRepository {
   async create (data: Prisma.AppointmentUncheckedCreateInput): Promise<Appointment> {
-    console.log('OLA')
     const createAppointment = await prisma.appointment.create({
       data: {
-        date: data.date,
         startTime: data.startTime,
         endTime: data.endTime,
-        userId: data.userId,
+        doctorId: data.doctorId,
         patientId: data.patientId,
         patientName: data.patientName,
         description: data.description
@@ -26,10 +24,10 @@ export class PrismaAppointmentRepositor implements AppointmentRepository {
     return findAllAppointments
   }
 
-  async findByDate (date: string): Promise<Appointment[] | null> {
+  async findByDate (startTime: string): Promise<Appointment[] | null> {
     const findManyAppointmentByDate = await prisma.appointment.findMany({
       where: {
-        date
+        startTime
       }
     })
 

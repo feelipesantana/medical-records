@@ -1,7 +1,8 @@
 import { type FastifyReply, type FastifyRequest } from 'fastify'
 import { z } from 'zod'
 import { makeCreateUser } from '../../use-cases/factory/make-create-user'
-import { RequiredParametersErros } from '../../errors/RequiredParametersErros'
+import { UserAlreadyExists } from '../../errors/user-already-exists-error'
+import { CreateError } from '../../errors/create-error'
 
 enum AccessType {
   ADMIN = 'ADMIN',
@@ -44,8 +45,11 @@ export async function createUserController (request: FastifyRequest, reply: Fast
     })
     return await reply.status(201).send(createUser)
   } catch (error) {
-    if (error instanceof RequiredParametersErros) {
-      return await reply.status(error.statusCode).send({ error: error.message })
+    if (error instanceof UserAlreadyExists) {
+      return await reply.status(409).send({ error: error.message })
+    }
+    if (error instanceof CreateError) {
+      return await reply.status(500).send({ error: error.message })
     }
 
     return await reply.status(500).send({ error: 'Erro interno do servidor' })

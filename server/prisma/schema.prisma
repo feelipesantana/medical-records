@@ -30,12 +30,11 @@ model User {
 
 model Appointment {
   id          String   @id @default(uuid())
-  startTime   DateTime
-  endTime     DateTime
+  startsAt    DateTime
+  endsAt      DateTime
   userId      User     @relation(fields: [doctorId], references: [id])
   doctorId    String
   patientId   String
-  patientName String
   description String
   createdAt   DateTime @default(now())
 }

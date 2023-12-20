@@ -1,7 +1,6 @@
 import { type FastifyReply, type FastifyRequest } from 'fastify'
 import { z } from 'zod'
 import { makeCreateAppointment } from '../../use-cases/factory/make-create-appointment'
-import { RequiredParametersErros } from '../../errors/RequiredParametersErros'
 
 export async function createAppointmentController (request: FastifyRequest, reply: FastifyReply) {
   const createSchemaBody = z.object({

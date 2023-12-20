@@ -1,6 +1,5 @@
 import { type FastifyReply, type FastifyRequest } from 'fastify'
 import { makeGetAppointmentsFactory } from '../../use-cases/factory/make-get-appointment'
-import { RequiredParametersErros } from '../../errors/RequiredParametersErros'
 
 export async function getAppointmentController (request: FastifyRequest, reply: FastifyReply) {
   try {

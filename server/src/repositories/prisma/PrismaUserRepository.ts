@@ -4,7 +4,7 @@ import { type UserRepository } from '../UserRepository'
 
 export class PrismaUserRepository implements UserRepository {
   async create (data: Prisma.UserCreateInput) {
-    const createdUser = await prisma.user.create({
+    const createUser = await prisma.user.create({
       data: {
         name: data.name,
         age: data.age,
@@ -17,7 +17,7 @@ export class PrismaUserRepository implements UserRepository {
       }
     })
 
-    return createdUser
+    return createUser
   }
 
   async findById (id: string) {

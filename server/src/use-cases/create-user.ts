@@ -1,7 +1,8 @@
 import { type AccessType, type User } from '@prisma/client'
 import { type UserRepository } from '../repositories/UserRepository'
 import bcrypt from 'bcrypt'
-import { RequiredParametersErros } from '../errors/RequiredParametersErros'
+import { UserAlreadyExists } from '../errors/user-already-exists-error'
+import { CreateError } from '../errors/create-error'
 
 interface AuthUseCaseRequest {
   name: string
@@ -23,7 +24,7 @@ export class CreateUserUseCase {
 
     // Verifying if User Exists
     if (verifyUserExist) {
-      throw new RequiredParametersErros('User already exists', 409)
+      throw new UserAlreadyExists()
     }
 
     // Hash Password
@@ -42,7 +43,7 @@ export class CreateUserUseCase {
     })
 
     if (!createUser) {
-      throw new RequiredParametersErros('Erro na criação do usuário', 500)
+      throw new CreateError()
     }
 
     return createUser

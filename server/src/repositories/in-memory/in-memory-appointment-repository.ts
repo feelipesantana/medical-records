@@ -1,19 +1,71 @@
-import { type Appointment } from '../../entities/appointment'
+import { type Prisma, type Appointment } from '@prisma/client'
 import { type AppointmentRepository } from '../AppointmentRepository'
+import { randomUUID } from 'crypto'
+import { areIntervalsOverlapping } from 'date-fns'
 
 export class InMemoryAppointmentRepository implements AppointmentRepository {
   private readonly items: Appointment[] = []
 
-  async create (appointment: Appointment): Promise<Appointment> {
-    this.items.push(appointment)
-    return appointment
+  async create (appointment: Prisma.AppointmentUncheckedCreateInput): Promise<Appointment> {
+    const newAppointment = {
+      id: randomUUID(),
+      startsAt: appointment.startsAt,
+      endsAt: appointment.endsAt,
+      doctorId: appointment.doctorId,
+      patientId: appointment.patientId,
+      description: appointment.description,
+      createdAt: new Date()
+    }
+
+    this.items.push(newAppointment)
+
+    return newAppointment
   }
 
   async findAll (): Promise<Appointment[]> {
     return this.items
   }
 
-  // async findByData(data: string): Promise<Appointment[] | null>{
-  //   this.items.find(res => data === this.items.)
-  // }
+  async findByDate (startsAt: Date): Promise<Appointment | null> {
+    const findAppointments = this.items.find(res => res.startsAt === startsAt)
+    if (!findAppointments) {
+      throw Error()
+    }
+
+    return findAppointments
+  }
+
+  async findByDoctorId (doctorId: string): Promise<Appointment[] | null> {
+    const findAppointmentsByDoctorId = this.items.find(res => res.doctorId === doctorId)
+
+    if (!findAppointmentsByDoctorId) {
+      return null
+    }
+
+    return this.items
+  }
+
+  async findOverlappingAppointment (doctorId: string, startTime: Date, endTime: Date): Promise<Appointment[] | null> {
+    const doctorAppointments = await this.findByDoctorId(doctorId)
+
+    if (!doctorAppointments) {
+      return null
+    }
+
+    console.log(doctorAppointments)
+    const overlappingAppointments: Appointment[] = doctorAppointments.filter(appointment => {
+      return areIntervalsOverlapping(
+        { start: startTime, end: endTime },
+        { start: appointment.startsAt, end: appointment.endsAt },
+        { inclusive: true }
+      )
+    })
+    console.log('inMemoryVERIFY', overlappingAppointments)
+
+    if (!overlappingAppointments) {
+      return null
+    }
+
+    return overlappingAppointments
+  }
 }

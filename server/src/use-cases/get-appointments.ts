@@ -1,6 +1,6 @@
 import { type Appointment } from '@prisma/client'
 import { type AppointmentRepository } from '../repositories/AppointmentRepository'
-import { RequiredParametersErros } from '../errors/RequiredParametersErros'
+import { SearchError } from '../errors/search-error'
 
 type CreateAppointmentUseCaseResponse = Appointment[]
 
@@ -11,7 +11,7 @@ export class GetAppointmentsUseCase {
     const findAllAppointment = await this.appointmentRepository.findAll()
 
     if (!findAllAppointment) {
-      throw new RequiredParametersErros('Erro na criação do apontamento', 409)
+      throw new SearchError()
     }
     return findAllAppointment
   }
