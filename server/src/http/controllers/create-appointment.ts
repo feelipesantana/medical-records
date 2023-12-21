@@ -1,34 +1,34 @@
 import { type FastifyReply, type FastifyRequest } from 'fastify'
 import { z } from 'zod'
 import { makeCreateAppointment } from '../../use-cases/factory/make-create-appointment'
+import { CreateError } from '../../errors/create-error'
 
 export async function createAppointmentController (request: FastifyRequest, reply: FastifyReply) {
   const createSchemaBody = z.object({
     date: z.string(),
-    startTime: z.string(),
-    endTime: z.string(),
-    userId: z.string(),
+    startsAt: z.date(),
+    endsAt: z.date(),
+    doctorId: z.string(),
     patientId: z.string(),
-    patientName: z.string(),
     description: z.string()
   })
 
-  const { date, startTime, endTime, patientId, patientName, userId, description } = createSchemaBody.parse(request.body)
+  const { startsAt, endsAt, patientId, doctorId, description } = createSchemaBody.parse(request.body)
   try {
     const appointmentFactory = makeCreateAppointment()
 
     const createAppointment = await appointmentFactory.execute({
-      date,
-      startTime,
-      endTime,
-      userId,
+      startsAt,
+      endsAt,
+      doctorId,
       patientId,
-      patientName,
       description
     })
 
     return await reply.status(201).send(createAppointment)
   } catch (error) {
-    throw new RequiredParametersErros('Error')
+    if (error instanceof CreateError) {
+      return await reply.status(500).send({ error: error.message })
+    }
   }
 }
