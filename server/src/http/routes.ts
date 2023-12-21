@@ -19,12 +19,12 @@ export async function appRoutes (app: FastifyInstance) {
 
   // { preHandler: checkToken }
 
-  // async function checkToken (request: FastifyRequest, reply: FastifyReply) {
-  //   const authHeader = request.headers.authorization
-  //   const token: string | undefined = authHeader?.split(' ')[1]
+  async function checkToken (request: FastifyRequest, reply: FastifyReply) {
+    const authHeader = request.headers.authorization
+    const token: string | undefined = authHeader?.split(' ')[1]
 
-  //   if (token === undefined) {
-  //     return await reply.status(401).send({ msg: 'Acesso negado' })
-  //   }
-  // }
+    if (token === undefined) {
+      return await reply.status(401).send({ msg: 'Acesso negado' })
+    }
+  }
 }
