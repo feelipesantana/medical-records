@@ -20,16 +20,18 @@ export class AuthenticateUseCase {
     email,
     password
   }: AuthUseCaseRequest): Promise<AuthUSeCaseResponse> {
+    // check Email exists
     const findUser = await this.userRepository.findByEmail(email)
 
-    console.log('HELLo', findUser)
     if (!findUser) {
       throw new UserNotFound()
     }
 
     // Check Both Pass
+    console.log(password, findUser.password)
     const isPasswordValid = await compare(password, findUser.password)
 
+    console.log(isPasswordValid)
     if (!isPasswordValid) {
       throw new UserNotFound()
     }

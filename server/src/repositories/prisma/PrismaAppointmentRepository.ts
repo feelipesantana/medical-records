@@ -6,11 +6,10 @@ export class PrismaAppointmentRepositor implements AppointmentRepository {
   async create (data: Prisma.AppointmentUncheckedCreateInput): Promise<Appointment> {
     const createAppointment = await prisma.appointment.create({
       data: {
-        startTime: data.startTime,
-        endTime: data.endTime,
+        startsAt: data.startsAt,
+        endsAt: data.endsAt,
         doctorId: data.doctorId,
         patientId: data.patientId,
-        patientName: data.patientName,
         description: data.description
       }
     })
@@ -24,13 +23,37 @@ export class PrismaAppointmentRepositor implements AppointmentRepository {
     return findAllAppointments
   }
 
-  async findByDate (startTime: string): Promise<Appointment[] | null> {
+  async findByDoctorId (doctorId: string): Promise<Appointment[] | null> {
     const findManyAppointmentByDate = await prisma.appointment.findMany({
       where: {
-        startTime
+        doctorId
       }
     })
 
     return findManyAppointmentByDate
+  }
+
+  async findOverlappingAppointment (doctorId: string, startAt: Date, endAt: Date): Promise<Appointment[] | null> {
+    const findAppointments = await prisma.appointment.findMany({
+      where: {
+        AND: [
+          {
+            doctorId
+          },
+          {
+            startsAt: {
+              gte: startAt
+            }
+          },
+          {
+            endsAt: {
+              lte: endAt
+            }
+          }
+        ]
+      }
+    })
+
+    return findAppointments
   }
 }
