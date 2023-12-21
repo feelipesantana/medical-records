@@ -25,7 +25,6 @@ export class InMemoryAppointmentRepository implements AppointmentRepository {
   async findAll (doctorId: string): Promise<Appointment[] | null> {
     const getAllAppointmentsByDoctor = await this.findByDoctorId(doctorId)
 
-    console.log(getAllAppointmentsByDoctor)
     if (!getAllAppointmentsByDoctor) {
       return null
     }

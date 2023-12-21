@@ -15,10 +15,19 @@ describe('Get Appointments', () => {
   it('must be able to get all appointments exists by each doctor selected', async () => {
     await inMemoryAppointmentRepository.create({
       id: 'teste1',
+      startsAt: getFutureDate('2022-08-11'),
+      endsAt: getFutureDate('2022-08-12'),
+      description: 'teste',
+      doctorId: 'doutor1',
+      patientId: randomUUID()
+    })
+
+    await inMemoryAppointmentRepository.create({
+      id: 'teste1',
       startsAt: getFutureDate('2022-10-11'),
       endsAt: getFutureDate('2022-10-12'),
       description: 'teste',
-      doctorId: 'doctor3',
+      doctorId: 'doutor3',
       patientId: randomUUID()
     })
 
@@ -26,14 +35,25 @@ describe('Get Appointments', () => {
       startsAt: getFutureDate('2022-09-11'),
       endsAt: getFutureDate('2022-09-12'),
       description: 'teste',
-      doctorId: 'doctor3',
+      doctorId: 'doutor3',
       patientId: randomUUID()
     })
 
     const searchAppointments = await sut.execute({
-      doctorId: 'doctor3'
+      doctorId: 'doutor3'
     })
 
     expect(searchAppointments).toHaveLength(2)
+    expect(searchAppointments).toHaveLength(2)
+  })
+
+  it('must to return 0 when not found doctorId', async () => {
+    const appointments = await sut.execute({
+      doctorId: 'non-existing-id'
+    })
+
+    const qtdAppointments = appointments.length
+
+    expect(qtdAppointments).toBe(0)
   })
 })

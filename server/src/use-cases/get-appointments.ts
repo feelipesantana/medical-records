@@ -13,6 +13,7 @@ export class GetAppointmentsUseCase {
 
   async execute ({ doctorId }: CreateAppointmentUseCaseRequest): Promise<CreateAppointmentUseCaseResponse> {
     const findAllAppointment = await this.appointmentRepository.findAll(doctorId)
+
     if (!findAllAppointment) {
       throw new SearchError()
     }

@@ -12,7 +12,7 @@ Medical Records
 - [ ] Deve ser possível obter dados de um paciente existente no banco
 - [ ] Deve ser possível obter as consultas por data
 - [ ] Deve ser possível obter o histórico do prontuário do paciente
-
+- [x] Deve ser possível pegar todos os apontamentos de cada medico
 
 ## RN  (REGRAS DE NEGOCIO)
 
