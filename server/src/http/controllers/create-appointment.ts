@@ -17,7 +17,6 @@ export async function createAppointmentController (request: FastifyRequest, repl
   try {
     const appointmentFactory = makeCreateAppointment()
 
-    console.log('chegou aqui', date)
     const createAppointment = await appointmentFactory.execute({
       date,
       startTime,

@@ -22,8 +22,15 @@ export class InMemoryAppointmentRepository implements AppointmentRepository {
     return newAppointment
   }
 
-  async findAll (): Promise<Appointment[]> {
-    return this.items
+  async findAll (doctorId: string): Promise<Appointment[] | null> {
+    const getAllAppointmentsByDoctor = await this.findByDoctorId(doctorId)
+
+    console.log(getAllAppointmentsByDoctor)
+    if (!getAllAppointmentsByDoctor) {
+      return null
+    }
+
+    return getAllAppointmentsByDoctor
   }
 
   async findByDate (startsAt: Date): Promise<Appointment | null> {
@@ -36,13 +43,13 @@ export class InMemoryAppointmentRepository implements AppointmentRepository {
   }
 
   async findByDoctorId (doctorId: string): Promise<Appointment[] | null> {
-    const findAppointmentsByDoctorId = this.items.find(res => res.doctorId === doctorId)
+    const findAppointmentsByDoctorId = this.items.filter(res => res.doctorId === doctorId)
 
     if (!findAppointmentsByDoctorId) {
       return null
     }
 
-    return this.items
+    return findAppointmentsByDoctorId
   }
 
   async findOverlappingAppointment (doctorId: string, startTime: Date, endTime: Date): Promise<Appointment[] | null> {
@@ -52,7 +59,6 @@ export class InMemoryAppointmentRepository implements AppointmentRepository {
       return null
     }
 
-    console.log(doctorAppointments)
     const overlappingAppointments: Appointment[] = doctorAppointments.filter(appointment => {
       return areIntervalsOverlapping(
         { start: startTime, end: endTime },
@@ -60,7 +66,6 @@ export class InMemoryAppointmentRepository implements AppointmentRepository {
         { inclusive: true }
       )
     })
-    console.log('inMemoryVERIFY', overlappingAppointments)
 
     if (!overlappingAppointments) {
       return null
