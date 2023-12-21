@@ -1,6 +1,6 @@
 import { type Appointment } from '@prisma/client'
 import { type AppointmentRepository } from '../repositories/AppointmentRepository'
-import { RequiredParametersErros } from '../errors/RequiredParametersErros'
+import { RequiredParametersErros } from '../errors/user-already-existed-error'
 
 interface GetAppointmentsDateRequest {
   date: string

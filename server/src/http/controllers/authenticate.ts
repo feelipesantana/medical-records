@@ -1,6 +1,7 @@
 import { type FastifyReply, type FastifyRequest } from 'fastify'
 import z from 'zod'
 import { makeAuthenticate } from '../../use-cases/factory/make-authenticate'
+import { AuthenticateError } from '../../errors/authenticate-error'
 export async function authenticateController (request: FastifyRequest, reply: FastifyReply) {
   const createSchemaBody = z.object({
     email: z.string(),
@@ -17,7 +18,9 @@ export async function authenticateController (request: FastifyRequest, reply: Fa
 
     return await reply.status(200).send(findUser)
   } catch (err) {
-    console.error(err)
-    return await reply.status(422).send('Usuário não encontrado, verifique usuário ou senha se está correto')
+    if (err instanceof AuthenticateError) {
+      return await reply.status(404).send(err.message)
+    }
+    return await reply.status(500).send('Usuário não encontrado, verifique usuário ou senha se está correto')
   }
 }
