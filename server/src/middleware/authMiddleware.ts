@@ -1,20 +1,30 @@
 import { type HookHandlerDoneFunction, type FastifyReply, type FastifyRequest } from 'fastify'
 import { makeValidadeTokenUseCase } from '../use-cases/factory/make-validate-token'
 
-export async function authMiddleware (request: FastifyRequest, reply: FastifyReply) {
+export const authMiddleware = async (request: FastifyRequest, reply: FastifyReply) => {
   const { authorization } = request.headers
 
-  const token = authorization?.split(' ')[1]
+  if (!authorization) {
+    await reply.status(401).send({ error: 'Unauthorized' })
+    throw new Error('Unauthorized')
+  }
+  const token: string | undefined = authorization?.split(' ')[1]
 
-  if (!token) {
-    return await reply.status(401).send({ message: 'Error' })
+  if (token === undefined) {
+    await reply.status(401).send({ error: 'Unauthorized' })
+    throw new Error('Unauthorized')
   }
 
   const makeValidateToken = makeValidadeTokenUseCase()
 
-  const user = makeValidateToken.execute({
+  const user = await makeValidateToken.execute({
     token
   })
+
+  if (!user) {
+    await reply.status(401).send({ error: 'Unauthorized' })
+    throw new Error('Unauthorized')
+  }
 
   request.user = user
 }
