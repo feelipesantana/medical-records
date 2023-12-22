@@ -11,6 +11,9 @@ interface AuthUseCaseRequest {
 
 interface AuthUseCaseResponse {
   token: string
+  id: string
+  name: string
+  accessType: string
 }
 
 type AuthUSeCaseResponse = AuthUseCaseResponse
@@ -40,6 +43,6 @@ export class AuthenticateUseCase {
 
     const token = jwt.sign({ id: findUser.id, email: findUser.email }, env.TOKEN_JWT, { expiresIn: '1d' })
 
-    return { token }
+    return { token, id: findUser.id, name: findUser.name, accessType: findUser.accessType }
   }
 }

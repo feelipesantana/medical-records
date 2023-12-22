@@ -1,30 +1,15 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
-import {
-  type FastifyInstance,
-  type FastifyReply,
-  type FastifyRequest
-} from 'fastify'
+import { type FastifyRequest, type FastifyInstance, type FastifyReply, type HookHandlerDoneFunction } from 'fastify'
 import { authenticateController } from './controllers/authenticate'
 import { createUserController } from './controllers/create-user'
-import { createAppointmentController } from './controllers/create-appointment'
 import { getAppointmentController } from './controllers/get-appointment'
+import { makeValidadeTokenUseCase } from '../use-cases/factory/make-validate-token'
+import { authMiddleware } from '../middleware/authMiddleware'
 
 export async function appRoutes (app: FastifyInstance) {
   // Routes
   app.post('/auth', authenticateController)
   app.post('/register', createUserController)
-  app.post('/appointment', createAppointmentController)
+  app.get('/appointment', { preHandler: authMiddleware }, getAppointmentController)
 
-  app.get('/appointment', getAppointmentController)
-
-  // { preHandler: checkToken }
-
-  async function checkToken (request: FastifyRequest, reply: FastifyReply) {
-    const authHeader = request.headers.authorization
-    const token: string | undefined = authHeader?.split(' ')[1]
-
-    if (token === undefined) {
-      return await reply.status(401).send({ msg: 'Acesso negado' })
-    }
-  }
 }
