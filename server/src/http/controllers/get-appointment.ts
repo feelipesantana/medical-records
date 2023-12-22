@@ -1,14 +1,14 @@
-import { type FastifyReply, type FastifyRequest } from 'fastify'
+import { type FastifyRequest, type FastifyReply } from 'fastify'
 import { makeGetAppointmentsFactory } from '../../use-cases/factory/make-get-appointment'
-import { z } from 'zod'
 import { SearchError } from '../../errors/search-error'
 
 export async function getAppointmentController (request: FastifyRequest, reply: FastifyReply) {
-  const zodSchema = z.object({
-    doctorId: z.string()
-  })
+  const doctorId = request.user.id
 
-  const { doctorId } = zodSchema.parse(request.query)
+  if (!doctorId) {
+    throw new Error('Erro no recebimento do id')
+  }
+
   try {
     const appointmentFactory = makeGetAppointmentsFactory()
 
