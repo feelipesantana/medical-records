@@ -1,3 +1,4 @@
+"use client";
 import {
   Menubar,
   MenubarContent,
@@ -8,6 +9,7 @@ import {
   MenubarTrigger,
 } from "@/components/ui/menubar";
 import { ChevronDown } from "lucide-react";
+import { signOut } from "next-auth/react";
 export function MenuDropDown() {
   return (
     <Menubar className="border-none bg-none ">
@@ -21,7 +23,7 @@ export function MenuDropDown() {
           </MenubarItem>
           <MenubarItem>Configurações</MenubarItem>
           <MenubarSeparator />
-          <MenubarItem>Sair</MenubarItem>
+          <MenubarItem onClick={() => signOut()}>Sair</MenubarItem>
         </MenubarContent>
       </MenubarMenu>
     </Menubar>

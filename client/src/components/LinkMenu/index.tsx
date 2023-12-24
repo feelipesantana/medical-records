@@ -9,7 +9,6 @@ interface LinkMenuProps {
 export function LinkMenu({ path, name }: LinkMenuProps) {
   const pathname = usePathname();
 
-  console.log(pathname);
   return (
     <Link
       href={path}
