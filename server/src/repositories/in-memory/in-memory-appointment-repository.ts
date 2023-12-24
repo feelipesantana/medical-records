@@ -32,14 +32,14 @@ export class InMemoryAppointmentRepository implements AppointmentRepository {
     return getAllAppointmentsByDoctor
   }
 
-  async findByDate (startsAt: Date): Promise<Appointment | null> {
-    const findAppointments = this.items.find(res => res.startsAt === startsAt)
-    if (!findAppointments) {
-      throw Error()
-    }
+  // async findByDate (startsAt: Date): Promise<Appointment | null> {
+  //   const findAppointments = this.items.find(res => res.startsAt === startsAt)
+  //   if (!findAppointments) {
+  //     throw Error()
+  //   }
 
-    return findAppointments
-  }
+  //   return findAppointments
+  // }
 
   async findByDoctorId (doctorId: string): Promise<Appointment[] | null> {
     const findAppointmentsByDoctorId = this.items.filter(res => res.doctorId === doctorId)
