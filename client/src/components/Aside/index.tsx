@@ -5,39 +5,65 @@ import { Calendar } from "@/components/ui/calendar";
 import { format, parse } from "date-fns";
 import { api } from "@/services/api";
 import { AppointmentType } from "@/types/AppointmentType";
-import { useAppointmentFiltered } from "@/hook/useAppointmentsFiltered";
+import { useAppointments } from "@/hook/useAppointmentsFiltered";
+import { useQuery } from "@tanstack/react-query";
+
+async function getAppointments() {
+  const response = await api.get("/appointment");
+  const result = await response.data;
+  return result;
+}
 
 export function Aside() {
-  const [date, setDate] = useState<Date | undefined>(new Date());
-  const { setAppointmentsFiltered } = useAppointmentFiltered();
-  async function getAppointmentByDate() {
-    if (date) {
-      const dateFormatted = format(
-        new Date(date),
-        "yyyy-MM-dd'T'00:00:00.000'Z'"
-      );
+  const [startsAt, setStartsAt] = useState<Date>(new Date());
+  const { setAppointments } = useAppointments();
 
-      try {
-        const response = await api.get("/appointment");
-        const result = await response.data;
-
-        if (result) {
-          const filterAppointmentsByDate = result.filter(
-            (appointment: AppointmentType) => appointment.date === dateFormatted
-          );
-
-          console.log(filterAppointmentsByDate);
-          setAppointmentsFiltered(filterAppointmentsByDate);
-        }
-      } catch (err) {
-        console.error(err);
-      }
-    }
-  }
+  const { data } = useQuery<AppointmentType[]>({
+    queryKey: ["appointments"],
+    queryFn: getAppointments,
+  });
 
   useEffect(() => {
-    getAppointmentByDate();
-  }, [date]);
+    const startsAtFormatted = format(startsAt, "MM-dd-yy");
+
+    const dataFiltered = data?.filter(
+      (result) =>
+        startsAtFormatted === format(new Date(result.startsAt), "MM-dd-yy")
+    );
+
+    if (!dataFiltered) return;
+
+    setAppointments(dataFiltered);
+  }, [startsAt]);
+
+  // async function getAppointmentByDate() {
+  //   if (date) {
+  //     const dateFormatted = format(
+  //       new Date(date),
+  //       "yyyy-MM-dd'T'00:00:00.000'Z'"
+  //     );
+
+  //     console.log("dateFormatted", dateFormatted);
+  //     try {
+  //       console.log("RESULT Request", result);
+  //       if (result) {
+  //         const filterAppointmentsByDate = result.filter(
+  //           (appointment: AppointmentType) =>
+  //             appointment.startsAt === dateFormatted
+  //         );
+
+  //         console.log(filterAppointmentsByDate);
+  //         setAppointmentsFiltered(filterAppointmentsByDate);
+  //       }
+  //     } catch (err) {
+  //       console.error(err);
+  //     }
+  //   }
+  // }
+
+  // useEffect(() => {
+  //   getAppointmentByDate();
+  // }, [date]);
   return (
     <aside className="w-96 border border-l-blue-default flex flex-col items-center py-4  ">
       <div className="w-full mb-10">
@@ -51,8 +77,8 @@ export function Aside() {
       </div>
       <Calendar
         mode="single"
-        selected={date}
-        onSelect={setDate}
+        selected={startsAt}
+        onSelect={setStartsAt}
         className="rounded-md border"
       />
     </aside>

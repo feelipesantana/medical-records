@@ -3,12 +3,12 @@ import { AppointmentType } from '@/types/AppointmentType';
 import {create} from 'zustand';
 
 type State = {
-  appointmentsFiltered: AppointmentType[] ;
-  setAppointmentsFiltered: (value:AppointmentType[]) => void;
+  appointments: AppointmentType[] ;
+  setAppointments: (value:AppointmentType[]) => void;
 };
 
-export const useAppointmentFiltered = create<State>((set) => ({
-  appointmentsFiltered: [],
-  setAppointmentsFiltered: (value) => set(() => ({ appointmentsFiltered: value })),
+export const useAppointments = create<State>((set) => ({
+  appointments: [],
+  setAppointments: (value) => set(() => ({ appointments: value })),
   
 }));

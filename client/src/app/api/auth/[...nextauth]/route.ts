@@ -27,7 +27,6 @@ const nextAuthOptions: NextAuthOptions = {
       },
 
       async authorize(credentials, req){
-        console.log(credentials)
         const response = await api.post('/auth', {
           email: credentials?.email,
           password: credentials?.password
@@ -49,10 +48,24 @@ const nextAuthOptions: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
 
   callbacks: {
-    async session({session, token}) {
-      // Você pode personalizar a lógica de sessão aqui, se necessário
-      return session;
+    async jwt({token,user}){
+      user && (token.user = user)
+      return token
     },
+    async session({session, token}){
+        session = token.user as any
+        return session
+    },
+    async signIn({account,user,credentials,}){
+      if(account?.provider === 'credentials'){
+        if(user){
+        
+          cookies().set('user_token', user.token)
+          
+        }
+      }
+      return true
+    }
   },
 
 

@@ -21,7 +21,6 @@ export default function Login() {
 
     if (validateDatas) {
       // setIsLoading(true);
-      console.log("TESTE", validateDatas);
       const result = await signIn("credentials", {
         email: validateDatas.email,
         password: validateDatas.password,
@@ -29,11 +28,10 @@ export default function Login() {
       });
 
       if (result?.error) {
-        console.log(result);
+        console.error(result.error);
         return;
       }
       replace("/cms");
-      console.log(result);
     }
     // if (result?.error) {
     //   setIsLoading(false);

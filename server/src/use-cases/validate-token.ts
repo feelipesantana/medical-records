@@ -15,7 +15,6 @@ export class ValidateToken {
 
   async execute ({ token }: ValidateTokenRequest): Promise<ValidateTokenResponse | null> {
     const { email } = jwt.verify(token, env.TOKEN_JWT) as JWTPayload
-    console.log(email)
     if (!email) {
       throw new Error()
     }

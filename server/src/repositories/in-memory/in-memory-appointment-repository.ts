@@ -1,7 +1,7 @@
 import { type Prisma, type Appointment } from '@prisma/client'
 import { type AppointmentRepository } from '../AppointmentRepository'
 import { randomUUID } from 'crypto'
-import { areIntervalsOverlapping } from 'date-fns'
+import { areIntervalsOverlapping, format } from 'date-fns'
 
 export class InMemoryAppointmentRepository implements AppointmentRepository {
   private readonly items: Appointment[] = []
@@ -21,6 +21,15 @@ export class InMemoryAppointmentRepository implements AppointmentRepository {
 
     return newAppointment
   }
+  async findByDoctorId (doctorId: string): Promise<Appointment[] | null> {
+    const findAppointmentsByDoctorId = this.items.filter(res => res.doctorId === doctorId)
+
+    if (!findAppointmentsByDoctorId) {
+      return null
+    }
+
+    return findAppointmentsByDoctorId
+  }
 
   async findAll (doctorId: string): Promise<Appointment[] | null> {
     const getAllAppointmentsByDoctor = await this.findByDoctorId(doctorId)
@@ -32,24 +41,20 @@ export class InMemoryAppointmentRepository implements AppointmentRepository {
     return getAllAppointmentsByDoctor
   }
 
-  async findByDate (startsAt: Date): Promise<Appointment | null> {
-    const findAppointments = this.items.find(res => res.startsAt === startsAt)
-    if (!findAppointments) {
+  async findByDate (startsAt: Date, doctorId:string): Promise<Appointment[] | null> {
+    const getAllAppointmentsByDoctor = await this.findByDoctorId(doctorId)
+    if (!getAllAppointmentsByDoctor) {
       throw Error()
     }
 
-    return findAppointments
+    const startsAtFormatted = format(startsAt, "MM-dd-yy");
+
+    const getByDate =  getAllAppointmentsByDoctor.filter(res => format(res.startsAt, "MM-dd-yy") === startsAtFormatted)
+
+    return getByDate
   }
 
-  async findByDoctorId (doctorId: string): Promise<Appointment[] | null> {
-    const findAppointmentsByDoctorId = this.items.filter(res => res.doctorId === doctorId)
-
-    if (!findAppointmentsByDoctorId) {
-      return null
-    }
-
-    return findAppointmentsByDoctorId
-  }
+ 
 
   async findOverlappingAppointment (doctorId: string, startTime: Date, endTime: Date): Promise<Appointment[] | null> {
     const doctorAppointments = await this.findByDoctorId(doctorId)
