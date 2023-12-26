@@ -1,7 +1,8 @@
 import { type Prisma, type Appointment } from '@prisma/client'
 import { type AppointmentRepository } from '../AppointmentRepository'
 import { randomUUID } from 'crypto'
-import { areIntervalsOverlapping, format } from 'date-fns'
+import { areIntervalsOverlapping, format , getOverlappingDaysInIntervals, isBefore} from 'date-fns'
+import { checkTimeOverlap } from '../../utils/checkTimeOverlapping'
 
 export class InMemoryAppointmentRepository implements AppointmentRepository {
   private readonly items: Appointment[] = []
@@ -62,19 +63,12 @@ export class InMemoryAppointmentRepository implements AppointmentRepository {
     if (!doctorAppointments) {
       return null
     }
-
+    
     const overlappingAppointments: Appointment[] = doctorAppointments.filter(appointment => {
-      return areIntervalsOverlapping(
-        { start: startTime, end: endTime },
-        { start: appointment.startsAt, end: appointment.endsAt },
-        { inclusive: true }
-      )
+      return checkTimeOverlap(appointment.startsAt,appointment.endsAt,startTime,endTime )
     })
 
-    if (!overlappingAppointments) {
-      return null
-    }
-
+    
     return overlappingAppointments
   }
 }
