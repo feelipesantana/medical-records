@@ -44,7 +44,6 @@ describe('Get Appointments', () => {
     })
 
     expect(searchAppointments).toHaveLength(2)
-    expect(searchAppointments).toHaveLength(2)
   })
 
   it('must to return 0 when not found doctorId', async () => {

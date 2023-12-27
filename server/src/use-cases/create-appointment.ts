@@ -18,9 +18,6 @@ export class CreateAppointmentUseCase {
   async execute ({ startsAt, endsAt, doctorId, patientId, description }: CreateAppointmentUseCaseRequest): Promise<CreateAppointmentUseCaseResponse> {
     const appointmentOverlapping = await this.appointmentRepository.findOverlappingAppointment(doctorId, startsAt, endsAt)
 
-    console.log("appointmentOverlapping result:", appointmentOverlapping)
-
-
     if (appointmentOverlapping && appointmentOverlapping?.length > 0){
       throw new CreateAppointmentOverlappingError()
     }

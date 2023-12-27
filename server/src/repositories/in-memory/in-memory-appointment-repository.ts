@@ -1,8 +1,8 @@
 import { type Prisma, type Appointment } from '@prisma/client'
 import { type AppointmentRepository } from '../AppointmentRepository'
 import { randomUUID } from 'crypto'
-import { areIntervalsOverlapping, format , getOverlappingDaysInIntervals, isBefore} from 'date-fns'
 import { checkTimeOverlap } from '../../utils/checkTimeOverlapping'
+import { formatGetJustDate } from '../../utils/getDateTimeZone'
 
 export class InMemoryAppointmentRepository implements AppointmentRepository {
   private readonly items: Appointment[] = []
@@ -42,16 +42,18 @@ export class InMemoryAppointmentRepository implements AppointmentRepository {
     return getAllAppointmentsByDoctor
   }
 
-  async findByDate (startsAt: Date, doctorId:string): Promise<Appointment[] | null> {
+  async findByDate (date: Date, doctorId:string): Promise<Appointment[] | null> {
     const getAllAppointmentsByDoctor = await this.findByDoctorId(doctorId)
+    
     if (!getAllAppointmentsByDoctor) {
       throw Error()
     }
+    const formattedDate = formatGetJustDate(date)
+    console.log("here", formattedDate)
 
-    const startsAtFormatted = format(startsAt, "MM-dd-yy");
+    const getByDate =  getAllAppointmentsByDoctor.filter(res => formatGetJustDate(res.startsAt) === formattedDate)
 
-    const getByDate =  getAllAppointmentsByDoctor.filter(res => format(res.startsAt, "MM-dd-yy") === startsAtFormatted)
-
+    console.log(getByDate)
     return getByDate
   }
 
