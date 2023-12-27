@@ -4,16 +4,21 @@ import { makeCreateAppointment } from '../../use-cases/factory/make-create-appoi
 import { CreateError } from '../../errors/create-error'
 
 export async function createAppointmentController (request: FastifyRequest, reply: FastifyReply) {
+
+  const doctorId = request.user.id
+
+  if (!doctorId) {
+    throw new Error('Erro no recebimento do id')
+  }
   const createSchemaBody = z.object({
     date: z.string(),
     startsAt: z.date(),
     endsAt: z.date(),
-    doctorId: z.string(),
     patientId: z.string(),
     description: z.string()
   })
 
-  const { startsAt, endsAt, patientId, doctorId, description } = createSchemaBody.parse(request.body)
+  const { startsAt, endsAt, patientId, description } = createSchemaBody.parse(request.body)
   try {
     const appointmentFactory = makeCreateAppointment()
 

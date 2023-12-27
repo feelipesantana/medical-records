@@ -49,11 +49,9 @@ export class InMemoryAppointmentRepository implements AppointmentRepository {
       throw Error()
     }
     const formattedDate = formatGetJustDate(date)
-    console.log("here", formattedDate)
 
     const getByDate =  getAllAppointmentsByDoctor.filter(res => formatGetJustDate(res.startsAt) === formattedDate)
 
-    console.log(getByDate)
     return getByDate
   }
 

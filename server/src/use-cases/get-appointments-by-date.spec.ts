@@ -1,18 +1,18 @@
 import { beforeEach, describe, expect, it, test } from "vitest";
 import { InMemoryAppointmentRepository } from "../repositories/in-memory/in-memory-appointment-repository";
-import { GetAppointmentsByDate } from "./get-appointments-by-date";
+import { GetAppointmentsByDateUseCase } from "./get-appointments-by-date";
 import { getFutureDate } from "../utils/getFutureDate";
 import {randomUUID} from 'crypto'
 
 
 let inMemoryAppointmentRepository: InMemoryAppointmentRepository
-let getAppointmentsByDate: GetAppointmentsByDate
+let getAppointmentsByDate: GetAppointmentsByDateUseCase
 
 
 describe("Get Appointments by Date", () =>{
   beforeEach(() =>{
     inMemoryAppointmentRepository = new InMemoryAppointmentRepository()
-    getAppointmentsByDate = new GetAppointmentsByDate(inMemoryAppointmentRepository)
+    getAppointmentsByDate = new GetAppointmentsByDateUseCase(inMemoryAppointmentRepository)
     
   })
 

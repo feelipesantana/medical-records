@@ -5,6 +5,5 @@ export function formatGetJustDate(value: Date) {
 
   
   const formattedDate = dateTimeZone.setLocale('pt-BR').toFormat('yyyy-MM-dd'); // Formatting the date
-  console.log(formattedDate)
   return formattedDate;
 }
