@@ -30,7 +30,6 @@ export class PrismaAppointmentRepositor implements AppointmentRepository {
       throw Error()
     }
     const formattedDate = formatGetJustDate(date)
-    console.log(formattedDate)
     const getByDate =  getAllAppointmentsByDoctor.filter(res => formatGetJustDate(res.startsAt) === formattedDate)
 
     return getByDate

@@ -10,6 +10,7 @@ export async function getAppointmentByDateController (request: FastifyRequest, r
   if (!doctorId) {
     throw new UnauthorizedError()
   }
+
   const createSchemaBody = z.object({
     date: z.string()
   })

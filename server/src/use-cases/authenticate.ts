@@ -31,10 +31,8 @@ export class AuthenticateUseCase {
     }
 
     // Check Both Pass
-    console.log(password, findUser.password)
     const isPasswordValid = await compare(password, findUser.password)
 
-    console.log(isPasswordValid)
     if (!isPasswordValid) {
       throw new UserNotFound()
     }
