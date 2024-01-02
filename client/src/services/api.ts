@@ -11,7 +11,6 @@ export const api = axios.create({
 
 api.interceptors.request.use(response => {
   const cookieToken = parseCookies()
-  console.log(cookieToken)
   api.defaults.headers.common["Authorization"] = 'Bearer ' + cookieToken.user_token
 
   return response

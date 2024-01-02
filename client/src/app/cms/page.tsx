@@ -1,4 +1,5 @@
 "use client";
+import { CreateAppointmentModal } from "@/components/CreateAppointmentModal";
 import { TimeLine } from "@/components/TimeLine";
 import { Button } from "@/components/ui/button";
 import { TextField } from "@mui/material";
@@ -8,7 +9,8 @@ export default function CMS() {
     <div className="flex flex-col gap-4 w-full items-start">
       <div className="flex items-center justify-between w-full px-4">
         <h1 className="text-lg text-center">Agenda </h1>
-        <Button variant={"default"}> Nova Consulta</Button>
+
+        <CreateAppointmentModal />
       </div>
       <TimeLine />
     </div>

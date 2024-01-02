@@ -7,35 +7,34 @@ import { api } from "@/services/api";
 import { AppointmentType } from "@/types/AppointmentType";
 import { useAppointments } from "@/hook/useAppointmentsFiltered";
 import { useQuery } from "@tanstack/react-query";
-
-async function getAppointments() {
-  const response = await api.get("/appointment");
-  const result = await response.data;
-  return result;
-}
+import { parseCookies } from "nookies";
 
 export function Aside() {
-  const [startsAt, setStartsAt] = useState<Date>(new Date());
+  const [startsAt, setStartsAt] = useState<Date | undefined>(new Date());
   const { setAppointments } = useAppointments();
+  async function getAppointments(date = new Date()) {
+    const formattedDate = format(date, "yyyy-MM-dd");
 
-  const { data } = useQuery<AppointmentType[]>({
+    const response = await api.get("/appointments/", {
+      params: {
+        date: String(formattedDate), // Convertendo a data para um formato reconhecido
+      },
+    });
+
+    const result: AppointmentType[] = await response.data;
+
+    setAppointments(result);
+    return result;
+  }
+
+  const { data, refetch } = useQuery<AppointmentType[]>({
     queryKey: ["appointments"],
-    queryFn: getAppointments,
+    queryFn: () => getAppointments(startsAt),
   });
 
   useEffect(() => {
-    const startsAtFormatted = format(startsAt, "MM-dd-yy");
-
-    const dataFiltered = data?.filter(
-      (result) =>
-        startsAtFormatted === format(new Date(result.startsAt), "MM-dd-yy")
-    );
-
-    if (!dataFiltered) return;
-
-    setAppointments(dataFiltered);
+    refetch();
   }, [startsAt]);
-
   // async function getAppointmentByDate() {
   //   if (date) {
   //     const dateFormatted = format(
@@ -61,9 +60,6 @@ export function Aside() {
   //   }
   // }
 
-  // useEffect(() => {
-  //   getAppointmentByDate();
-  // }, [date]);
   return (
     <aside className="w-96 border border-l-blue-default flex flex-col items-center py-4  ">
       <div className="w-full mb-10">
