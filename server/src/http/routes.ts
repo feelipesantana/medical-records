@@ -15,6 +15,6 @@ export async function appRoutes (app: FastifyInstance) {
 
   app.get('/appointments', { preHandler: authMiddleware }, getAppointmentController)
   app.get('/appointments/:date', { preHandler: authMiddleware }, getAppointmentByDateController)
-  app.post('/appointments/create', { preHandler: authMiddleware }, createAppointmentController)
+  app.post('/appointments', {preHandler: authMiddleware }, createAppointmentController)
 
 }
