@@ -3,8 +3,7 @@
 import { CalendarIcon } from "lucide-react";
 import { ReactNode, useState } from "react";
 import { api } from "@/services/api";
-import { zonedTimeToUtc, utcToZonedTime, format } from "date-fns-tz";
-import { setHours, setMinutes } from "date-fns";
+import { format } from "date-fns-tz";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
@@ -72,8 +71,8 @@ export function CreateAppointmentModal() {
   }
   return (
     <Dialog>
-      <DialogTrigger>
-        <Button variant={"default"}> Nova Consulta</Button>
+      <DialogTrigger asChild>
+        <Button>Nova Consulta</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[28rem]">
         <DialogHeader>

@@ -1,8 +1,6 @@
 "use client";
 import { CreateAppointmentModal } from "@/components/CreateAppointmentModal";
 import { TimeLine } from "@/components/TimeLine";
-import { Button } from "@/components/ui/button";
-import { TextField } from "@mui/material";
 
 export default function CMS() {
   return (

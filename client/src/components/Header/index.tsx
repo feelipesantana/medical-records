@@ -1,3 +1,4 @@
+"use client";
 import { Bell } from "lucide-react";
 import { MenuDropDown } from "./MenuDropDown";
 import { Avatar, AvatarImage } from "../ui/avatar";
@@ -25,13 +26,7 @@ export function Header() {
               placeholder="Encontrar paciente"
               className="outline-none selection:outline-none select-none h-9"
             />
-            <Button
-              variant={"default"}
-              size={"sm"}
-              className="bg-blue-default hover:bg-blue-500"
-            >
-              Buscar
-            </Button>
+            <Button>Buscar</Button>
           </form>
           <Bell className="text-blue-default " />
 
