@@ -17,6 +17,7 @@ export async function getAppointmentByDateController (request: FastifyRequest, r
 
   const {date} = createSchemaBody.parse(request.query)
 
+  console.log("VERIFICAR", date)
   try {
     const appointmentFactory = makeGetAppointmentsByDateFactory()
 

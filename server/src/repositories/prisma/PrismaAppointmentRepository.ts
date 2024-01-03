@@ -1,7 +1,8 @@
 import { type AppointmentRepository } from '../AppointmentRepository'
 import { prisma } from '../../lib/prisma'
 import { type Prisma, type Appointment } from '@prisma/client'
-import { formatGetJustDate } from '../../utils/getDateTimeZone'
+import { format } from 'date-fns-tz'
+import { formatGetJustDate } from '../../utils/formatDate'
 
 export class PrismaAppointmentRepositor implements AppointmentRepository {
   async create (data: Prisma.AppointmentUncheckedCreateInput): Promise<Appointment> {
@@ -29,8 +30,7 @@ export class PrismaAppointmentRepositor implements AppointmentRepository {
     if (!getAllAppointmentsByDoctor) {
       throw Error()
     }
-    const formattedDate = formatGetJustDate(date)
-    const getByDate =  getAllAppointmentsByDoctor.filter(res => formatGetJustDate(res.startsAt) === formattedDate)
+    const getByDate =  getAllAppointmentsByDoctor.filter(res => formatGetJustDate(res.startsAt) === formatGetJustDate(date))
 
     return getByDate
   }

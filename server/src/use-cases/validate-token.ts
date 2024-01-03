@@ -2,6 +2,8 @@ import { type UserRepository } from '../repositories/UserRepository'
 import jwt from 'jsonwebtoken'
 import { env } from '../env'
 import { type User } from '@prisma/client'
+
+
 interface ValidateTokenRequest {
   token: string
 }

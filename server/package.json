@@ -36,11 +36,13 @@
     "@prisma/client": "^5.6.0",
     "bcrypt": "^5.1.1",
     "date-fns": "^3.0.6",
+    "date-fns-tz": "^2.0.0",
     "dotenv": "^16.3.1",
     "fastify": "^4.24.3",
     "i": "^0.3.7",
     "jsonwebtoken": "^9.0.2",
     "luxon": "^3.4.4",
+    "moment-timezone": "^0.5.44",
     "npm": "^10.2.5",
     "zod": "^3.22.4"
   }

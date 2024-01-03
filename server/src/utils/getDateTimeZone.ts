@@ -1,6 +1,6 @@
 import { DateTime } from 'luxon';
 
-export function formatGetJustDate(value: Date) {
+export function formatTimeZone(value: Date) {
   const dateTimeZone = DateTime.fromJSDate(value, { zone: 'America/Sao_Paulo' });
 
   
