@@ -7,7 +7,7 @@ export function formatDateWithTime(date: Date, time:string){
   date.setHours(Number(hour));
   date.setMinutes(Number(minute));
   
-  const formattedDate = format(date, "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", {timeZone: targetTimeZone });
-
+  const formattedDate = format(date, "yyyy-MM-dd'T'HH:mm:ss.SSS", {timeZone: targetTimeZone });
+  console.log(formattedDate )
   return formattedDate
 }

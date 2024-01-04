@@ -8,9 +8,10 @@ import { AppointmentType } from "@/types/AppointmentType";
 import { useAppointments } from "@/hook/useAppointmentsFiltered";
 import { useQuery } from "@tanstack/react-query";
 import { parseCookies } from "nookies";
+import { useChosenDate } from "@/hook/useChosenDate";
 
 export function Aside() {
-  const [startsAt, setStartsAt] = useState<Date | undefined>(new Date());
+  const { chosenDate, setChosenDate } = useChosenDate();
   const { setAppointments } = useAppointments();
   async function getAppointments(date = new Date()) {
     const formattedDate = format(date, "yyyy-MM-dd");
@@ -29,12 +30,12 @@ export function Aside() {
 
   const { data, refetch } = useQuery<AppointmentType[]>({
     queryKey: ["appointments"],
-    queryFn: () => getAppointments(startsAt),
+    queryFn: () => getAppointments(chosenDate),
   });
 
   useEffect(() => {
     refetch();
-  }, [startsAt]);
+  }, [chosenDate]);
   // async function getAppointmentByDate() {
   //   if (date) {
   //     const dateFormatted = format(
@@ -73,8 +74,8 @@ export function Aside() {
       </div>
       <Calendar
         mode="single"
-        selected={startsAt}
-        onSelect={setStartsAt}
+        selected={chosenDate}
+        onSelect={setChosenDate}
         className="rounded-md border"
       />
     </aside>
