@@ -13,6 +13,7 @@ import { useChosenDate } from "@/hook/useChosenDate";
 export function Aside() {
   const { chosenDate, setChosenDate } = useChosenDate();
   const { setAppointments } = useAppointments();
+
   async function getAppointments(date = new Date()) {
     const formattedDate = format(date, "yyyy-MM-dd");
 
@@ -24,8 +25,12 @@ export function Aside() {
 
     const result: AppointmentType[] = await response.data;
 
-    setAppointments(result);
-    return result;
+    if (result) {
+      setAppointments(result);
+      return result;
+    } else {
+      return [];
+    }
   }
 
   const { data, refetch } = useQuery<AppointmentType[]>({

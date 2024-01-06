@@ -1,11 +1,8 @@
 "use client";
 import { CreateAppointmentModal } from "@/components/CreateAppointmentModal";
-import Schedule from "@/components/Schedule";
-import { useAppointments } from "@/hook/useAppointmentsFiltered";
+import { Schedule } from "@/components/Schedule";
 
 export default function CMS() {
-  const { appointments } = useAppointments();
-
   return (
     <div className="flex flex-col gap-4 w-full items-start">
       <div className="flex items-center justify-between w-full px-4">
