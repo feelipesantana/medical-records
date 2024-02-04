@@ -5,8 +5,26 @@ import { Avatar, AvatarImage } from "../ui/avatar";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { LinkMenu } from "../LinkMenu";
+import { useForm } from "react-hook-form";
+import { useEffect, useState } from "react";
 
 export function Header() {
+
+  const [users, setUsers] = useState()
+  const { handleSubmit, watch, register } = useForm()
+  const name = watch('name')
+
+  async function handleSearch(e) {
+    const name = e.target.value;
+    const response = await fetch('https://coffee.alexflipnote.dev/random.json');
+    const result = await response.json();
+    console.log(result); // Log the JSON response to the console
+
+    // Rest of your code...
+  }
+
+
+
   return (
     <header className="flex flex-col  px-14 ">
       <div className="flex justify-between items-center bg-white h-24">
@@ -25,6 +43,8 @@ export function Header() {
               type="text"
               placeholder="Encontrar paciente"
               className="outline-none selection:outline-none select-none h-9"
+              {...register('name')}
+              onChange={(e) => handleSearch(e)}
             />
             <Button>Buscar</Button>
           </form>
