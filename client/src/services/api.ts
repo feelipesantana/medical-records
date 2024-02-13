@@ -9,6 +9,14 @@ export const api = axios.create({
 })
 
 
+export const fakeAPI = axios.create({
+  baseURL: "https://dummyjson.com",
+  headers: {
+    'Content-Type': 'application/json',
+    "Access-Control-Allow-Origin": "*"
+  },
+})
+
 api.interceptors.request.use(response => {
   const cookieToken = parseCookies()
   api.defaults.headers.common["Authorization"] = 'Bearer ' + cookieToken.user_token
