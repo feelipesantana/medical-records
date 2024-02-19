@@ -1,3 +1,13 @@
+'use client'
+
+import { usePatient } from "@/hook/usePatient";
+
 export default function MedicalRecords() {
-  return <h1>Patients</h1>;
+  const { patient } = usePatient()
+
+  return (
+    <div>
+      {patient?.firstName}
+    </div>
+  )
 }

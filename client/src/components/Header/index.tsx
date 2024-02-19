@@ -8,6 +8,9 @@ import { LinkMenu } from "../LinkMenu";
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import { fakeAPI } from "@/services/api";
+import Link from "next/link";
+import { Patient, usePatient } from "@/hook/usePatient";
+import { useRouter } from "next/navigation";
 
 interface Person {
   id: number;
@@ -81,10 +84,11 @@ interface User {
 }
 
 export function Header() {
+  const router = useRouter()
 
   const [users, setUsers] = useState<Person[]>()
   const [focusOnInput, setFocusOnInput] = useState(false)
-
+  const { setPatient } = usePatient()
   const { handleSubmit, watch, register } = useForm()
   const name = watch('name')
 
@@ -105,11 +109,16 @@ export function Header() {
     } catch (err) {
       console.log(err)
     }
-
   }
 
+  function handlePatient(e: any, res: Patient) {
+    e.preventDefault()
 
+    setPatient(res)
 
+    router.push(`/cms/patients`)
+
+  }
   return (
     <header className="flex flex-col  px-14 ">
       <div className="flex justify-between items-center bg-white h-24">
@@ -137,10 +146,12 @@ export function Header() {
 
               <Button size="sm">Buscar</Button>
             </div>
-            <div className={`absolute z-10 w-full ${focusOnInput ? 'hidden' : 'block'}`}>
-              <ul className=" backdrop-blur-lg bg-white/50 w-[20%] mt-6 rounded-lg shadow-sm p-2">
+            <div className={`absolute z-10 w-full `}>
+              <ul className=" backdrop-blur-lg bg-white/50 w-[20%] mt-6 rounded-lg shadow-sm p-2 flex flex-col items-start">
                 {users?.map(res => {
-                  return <li key={res.id} className="text-base p-2 hover:bg-blue-default hover:text-white">{res.firstName}</li>
+                  return (
+                    <Button variant={"ghost"} className="w-full" onClick={(e) => handlePatient(e, res)} key={res.id}><li className="text-base p-2 w-full text-start">{res.firstName}</li></Button>
+                  )
                 })}
               </ul>
             </div>
