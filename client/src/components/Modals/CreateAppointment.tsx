@@ -33,6 +33,7 @@ import { Calendar } from "../ui/calendar";
 import { cn } from "@/lib/utils";
 import { formatDateWithTime } from "@/utils/formatDateWithTime";
 import { useQueryClient } from "@tanstack/react-query";
+import { useToast } from "../ui/use-toast";
 
 interface CreateAppointmentProps {
   children: ReactNode;
@@ -47,8 +48,11 @@ const schemaZod = z.object({
 });
 
 type FormValues = z.infer<typeof schemaZod>;
+
 export function CreateAppointment() {
   const [date, setDate] = useState<Date>();
+  const { toast } = useToast()
+
   const queryClient = useQueryClient()
 
   const { handleSubmit, register, setValue, getValues, watch } =
@@ -65,10 +69,25 @@ export function CreateAppointment() {
         endsAt: newEndsAt,
         description: data.description,
       };
+      try {
+        const response = await api.post("/appointments", payload);
+        if (response.status === 201) {
+          toast({
+            variant: "default",
+            title: "Consulta criada com sucesso",
+            description: `A consulta do paciente ${payload.patientId} inicia ${payload.startsAt}`,
+          })
+          queryClient.invalidateQueries({ queryKey: ['appointments'] })
+        }
+      } catch (err) {
+        toast({
+          variant: "destructive",
+          title: "Erro na Criação de uma consulta",
+          description: "Friday, February 10, 2023 at 5:57 PM",
 
-      const response = await api.post("/appointments", payload);
+        })
+      }
 
-      queryClient.invalidateQueries({ queryKey: ['appointments'] })
     }
   }
   return (

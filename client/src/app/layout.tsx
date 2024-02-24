@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Lato, Poppins } from "next/font/google";
 import "./globals.css";
 import { AppProvider } from "@/providers";
+import { Toaster } from "@/components/ui/toaster";
 
 const inter = Inter({ subsets: ["latin"] });
 const lato = Poppins({
@@ -25,6 +26,8 @@ export default async function RootLayout({
     <html lang="en">
       <body className={lato.className} suppressHydrationWarning={true}>
         <AppProvider>{children}</AppProvider>
+        <Toaster />
+
       </body>
     </html>
   );
