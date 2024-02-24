@@ -1,6 +1,8 @@
 "use client";
-import Image from "next/image";
 import { useEffect, useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
+
 import { Calendar } from "@/components/ui/calendar";
 import { format, parse } from "date-fns";
 import { api } from "@/services/api";
@@ -63,12 +65,13 @@ export function Aside() {
   //     } catch (err) {
   //       console.error(err);
   //     }
+
   //   }
   // }
 
   return (
     <aside className="w-96 border border-l-blue-default flex flex-col items-center py-4  ">
-      <div className="w-full mb-10">
+      <Link href="/" className="w-full mb-10">
         <Image
           src="/assets/logo3.png"
           alt="logo"
@@ -76,7 +79,7 @@ export function Aside() {
           height={200}
           className="mx-auto"
         />
-      </div>
+      </Link>
       <Calendar
         mode="single"
         selected={chosenDate}

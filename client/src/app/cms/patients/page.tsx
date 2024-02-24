@@ -10,9 +10,7 @@ export default function MedicalRecords() {
   const { patient } = usePatient()
   console.log(patient?.image)
   const imageLoader = ({ src, width, quality }: any) => {
-
     return `${patient?.image}/${src}?w=${width}&q=${quality || 75}`
-
 
   }
 
@@ -42,22 +40,22 @@ export default function MedicalRecords() {
               <Input defaultValue={patient?.firstName} />
             </div>
             <div>
-              <Label>Ultimo Nome:</Label>
-              <Input defaultValue={patient?.lastName} />
+              <Label>Idade:</Label>
+              <Input defaultValue={patient?.age} />
             </div>
             <div>
-              <Label>Primeiro Nome:</Label>
-              <Input defaultValue={patient?.firstName} />
+              <Label>Email:</Label>
+              <Input defaultValue={patient?.email} />
             </div>
           </div>
           <div className="w-full">
             <div>
-              <Label>Primeiro Nome:</Label>
-              <Input defaultValue={patient?.firstName} />
+              <Label>Último Nome:</Label>
+              <Input defaultValue={patient?.lastName} />
             </div>
             <div>
-              <Label>Ultimo Nome:</Label>
-              <Input defaultValue={patient?.lastName} />
+              <Label>Telefone:</Label>
+              <Input defaultValue={patient?.phone} />
             </div>
             <div>
               <Label>Primeiro Nome:</Label>

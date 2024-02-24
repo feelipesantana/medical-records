@@ -99,12 +99,14 @@ export function Header() {
       const response = await fakeAPI.get<User>(`/users`)
       const users = response.data.users
 
-      if (users) {
+      if (users && name) {
         const filteredUsers = users.filter(value => {
           return value.firstName.toLocaleLowerCase().includes(name.toLocaleLowerCase())
         })
 
         setUsers(filteredUsers)
+      } else {
+        setUsers([])
       }
     } catch (err) {
       console.log(err)
@@ -114,10 +116,11 @@ export function Header() {
   function handlePatient(e: any, res: Patient) {
     e.preventDefault()
 
-    setPatient(res)
-
-    router.push(`/cms/patients`)
-
+    if (res.id) {
+      setPatient(res)
+      router.push(`/cms/patients`)
+      setUsers([])
+    }
   }
   return (
     <header className="flex flex-col  px-14 ">
@@ -125,19 +128,21 @@ export function Header() {
         <div className="flex items-center mt-2 ">
           <LinkMenu path="/cms" name="Agenda" />
           <LinkMenu path="/cms/medical-records" name="Prontuário" />
-          <LinkMenu path="/cms/patients" name="Pacientes" />
+
           <LinkMenu path="/cms/management" name="Gestão" />
           <LinkMenu path="/cms/others" name="Outros" />
           <LinkMenu path="/cms/config" name="Configurações Admin" />
         </div>
 
-        <div className="flex items-center justify-center gap-6">
-          <form className="">
+        <div className="flex items-center justify-center gap-6 ">
+
+          <form className="relative">
             <div className="flex items-center justify-center gap-2">
               <Input
-                type="text"
+                autocomplete="off"
+                type="search"
                 placeholder="Encontrar paciente"
-                className="outline-none selection:outline-none select-none h-9"
+                className="outline-none selection:outline-none select-none h-9 w-72"
                 {...register('name')}
                 onChange={(e) => handleSearch(e)}
                 onFocus={() => setFocusOnInput(false)}
@@ -146,15 +151,20 @@ export function Header() {
 
               <Button size="sm">Buscar</Button>
             </div>
-            <div className={`absolute z-10 w-full `}>
-              <ul className=" backdrop-blur-lg bg-white/50 w-[20%] mt-6 rounded-lg shadow-sm p-2 flex flex-col items-start">
-                {users?.map(res => {
-                  return (
-                    <Button variant={"ghost"} className="w-full" onClick={(e) => handlePatient(e, res)} key={res.id}><li className="text-base p-2 w-full text-start">{res.firstName}</li></Button>
-                  )
-                })}
-              </ul>
-            </div>
+            {users && users.length > 0 &&
+              <div className={`absolute mt-2 z-10 bg-white/50 shadow-sm border w-full max-h-96 overflow-y-auto`}>
+
+                <ul className=" backdrop-blur-lg  rounded-lg p-2  flex flex-col items-start">
+                  {users?.map(res => {
+                    return (
+                      <Button variant={"ghost"} className="w-full hover:bg-blue-default/20" onClick={(e) => handlePatient(e, res)} key={res.id}><li className="text-base p-2 w-full text-start">{res.firstName}</li></Button>
+                    )
+                  })}
+                </ul>
+
+
+              </div>
+            }
           </form>
           <Bell className="text-blue-default " />
 
