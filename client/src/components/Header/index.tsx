@@ -139,7 +139,7 @@ export function Header() {
           <form className="relative">
             <div className="flex items-center justify-center gap-2">
               <Input
-                autocomplete="off"
+                autoComplete="off"
                 type="search"
                 placeholder="Encontrar paciente"
                 className="outline-none selection:outline-none select-none h-9 w-72"

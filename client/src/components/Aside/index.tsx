@@ -1,8 +1,6 @@
 "use client";
-import { useEffect, useState } from "react";
 import Image from "next/image";
-import Link from "next/link";
-
+import { useEffect, useState } from "react";
 import { Calendar } from "@/components/ui/calendar";
 import { format, parse } from "date-fns";
 import { api } from "@/services/api";
@@ -11,6 +9,7 @@ import { useAppointments } from "@/hook/useAppointmentsFiltered";
 import { useQuery } from "@tanstack/react-query";
 import { parseCookies } from "nookies";
 import { useChosenDate } from "@/hook/useChosenDate";
+import Link from "next/link";
 
 export function Aside() {
   const { chosenDate, setChosenDate } = useChosenDate();
@@ -65,7 +64,6 @@ export function Aside() {
   //     } catch (err) {
   //       console.error(err);
   //     }
-
   //   }
   // }
 

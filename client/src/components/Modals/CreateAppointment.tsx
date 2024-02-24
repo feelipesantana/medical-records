@@ -32,8 +32,9 @@ import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Calendar } from "../ui/calendar";
 import { cn } from "@/lib/utils";
 import { formatDateWithTime } from "@/utils/formatDateWithTime";
+import { useQueryClient } from "@tanstack/react-query";
 
-interface CreateAppointmentModalProps {
+interface CreateAppointmentProps {
   children: ReactNode;
 }
 
@@ -46,8 +47,9 @@ const schemaZod = z.object({
 });
 
 type FormValues = z.infer<typeof schemaZod>;
-export function CreateAppointmentModal() {
+export function CreateAppointment() {
   const [date, setDate] = useState<Date>();
+  const queryClient = useQueryClient()
 
   const { handleSubmit, register, setValue, getValues, watch } =
     useForm<FormValues>();
@@ -66,7 +68,7 @@ export function CreateAppointmentModal() {
 
       const response = await api.post("/appointments", payload);
 
-      console.log(response.status);
+      queryClient.invalidateQueries({ queryKey: ['appointments'] })
     }
   }
   return (

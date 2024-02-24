@@ -1,5 +1,5 @@
 "use client";
-import { CreateAppointmentModal } from "@/components/CreateAppointmentModal";
+import { CreateAppointment } from "@/components/Modals/CreateAppointment";
 import { Schedule } from "@/components/Schedule";
 
 export default function CMS() {
@@ -8,7 +8,7 @@ export default function CMS() {
       <div className="flex items-center justify-between w-full px-4">
         <h1 className="text-lg text-center">Agenda </h1>
 
-        <CreateAppointmentModal />
+        <CreateAppointment />
       </div>
 
       <Schedule />
