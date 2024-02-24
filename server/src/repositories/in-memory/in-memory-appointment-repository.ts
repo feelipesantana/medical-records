@@ -2,7 +2,7 @@ import { type Prisma, type Appointment } from '@prisma/client'
 import { type AppointmentRepository } from '../AppointmentRepository'
 import { randomUUID } from 'crypto'
 import { checkTimeOverlap } from '../../utils/checkTimeOverlapping'
-import { formatGetJustDate } from '../../utils/getDateTimeZone'
+import { formatTimeZone } from '../../utils/getDateTimeZone'
 
 export class InMemoryAppointmentRepository implements AppointmentRepository {
   private readonly items: Appointment[] = []
@@ -48,9 +48,9 @@ export class InMemoryAppointmentRepository implements AppointmentRepository {
     if (!getAllAppointmentsByDoctor) {
       throw Error()
     }
-    const formattedDate = formatGetJustDate(date)
+    const formattedDate = formatTimeZone(date)
 
-    const getByDate =  getAllAppointmentsByDoctor.filter(res => formatGetJustDate(res.startsAt) === formattedDate)
+    const getByDate =  getAllAppointmentsByDoctor.filter(res => formatTimeZone(res.startsAt) === formattedDate)
 
     return getByDate
   }

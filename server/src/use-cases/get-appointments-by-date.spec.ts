@@ -38,7 +38,7 @@ describe("Get Appointments by Date", () =>{
 
 
     const getAppointments = getAppointmentsByDate.execute({
-      date: getFutureDate('2023-08-02T03:00:00.000Z'),
+      date: getFutureDate('2023-08-02T10:00:00.000Z'),
       doctorId: 'doutor3'
     })
     expect(getAppointments).toBeTruthy()
