@@ -5,9 +5,7 @@ import { ReactNode, useState } from "react";
 import { api } from "@/services/api";
 import { format } from "date-fns-tz";
 import { Button } from "../ui/button";
-import { Input } from "../ui/input";
-import { Label } from "../ui/label";
-import { useForm } from "react-hook-form";
+
 import {
   Select,
   SelectContent,
@@ -25,41 +23,44 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Diplomata } from "next/font/google";
-import { z } from "zod";
 
-import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
-import { Calendar } from "../ui/calendar";
-import { cn } from "@/lib/utils";
-import { formatDateWithTime } from "@/utils/formatDateWithTime";
+
+
+import { useEventModal } from "@/hook/useEventModal";
+import { deleteAppointment } from "@/api/delete-appointment";
 import { useQueryClient } from "@tanstack/react-query";
-import { useToast } from "../ui/use-toast";
-import { useOpenModal } from "@/hook/useOpenModal";
+import { toast } from "../ui/use-toast";
 
 interface CreateAppointmentProps {
   children: ReactNode;
 }
 
-const schemaZod = z.object({
-  patientId: z.string(),
-  dateAt: z.string(),
-  startsAt: z.string(),
-  endsAt: z.string(),
-  description: z.string(),
-});
-
-type FormValues = z.infer<typeof schemaZod>;
-
 export function EventClickModal() {
-  const { openModal, setOpenModal } = useOpenModal()
+  const { openModal, setOpenModal, eventId } = useEventModal()
+
+  const queryClient = useQueryClient()
+  async function handleDeleteAppointment() {
+    const response = await deleteAppointment({ eventId })
+    if (response?.status === 202) {
+      queryClient.invalidateQueries({ queryKey: ['appointments'] })
+
+      toast({
+        title: "Consulta deletada com sucesso!",
+        description: `A consulta com o id ${eventId} foi deletada com sucesso`
+      })
+
+    }
+  }
+
+
   return (
     <Dialog open={openModal} onOpenChange={setOpenModal}>
       <DialogContent className="sm:max-w-[28rem]">
         <DialogHeader>
-          <DialogTitle>Registrar Consulta</DialogTitle>
-          <DialogDescription>Registre as consultas diárias</DialogDescription>
-        </DialogHeader>
+          <DialogTitle>ID: {eventId}</DialogTitle>
 
+        </DialogHeader>
+        <Button variant={"destructive"} onClick={handleDeleteAppointment}>Excluir Apontamento</Button>
       </DialogContent>
     </Dialog>
   );

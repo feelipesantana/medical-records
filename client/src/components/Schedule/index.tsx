@@ -9,11 +9,11 @@ import { useEffect, useRef, useState } from "react";
 import { useChosenDate } from "@/hook/useChosenDate";
 import { Calendar } from "@fullcalendar/core";
 import { EventClickModal } from "../Modals/EventClickModal";
-import { useOpenModal } from "@/hook/useOpenModal";
+import { useEventModal } from "@/hook/useEventModal";
 
 export function Schedule() {
   const calendarRef = useRef<Calendar | null>(null);
-  const { openModal, setOpenModal } = useOpenModal()
+  const { openModal, setOpenModal, setEventId } = useEventModal()
   const [value, setValue] = useState<Date>();
 
   const { appointments } = useAppointments();
@@ -29,7 +29,8 @@ export function Schedule() {
   useEffect(() => {
     if (appointments && appointments.length > 0 && chosenDate) {
       const newEvents = appointments.map((res, index) => ({
-        title: "nice event",
+        id: res.id,
+        title: res.patientId,
         start: new Date(res.startsAt),
         end: new Date(res.endsAt),
         resourceId: index,
@@ -40,11 +41,8 @@ export function Schedule() {
   }, [appointments, chosenDate]);
 
   const eventClickValue = (e) => {
-    console.log(e)
     setOpenModal(true)
-    return (
-      <div>Teste</div>
-    )
+    setEventId(e.event._def.publicId)
   }
   const handleDateClick = (arg) => {
     alert(arg.dateStr)
