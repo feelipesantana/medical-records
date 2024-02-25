@@ -8,9 +8,12 @@ import { useAppointments } from "@/hook/useAppointmentsFiltered";
 import { useEffect, useRef, useState } from "react";
 import { useChosenDate } from "@/hook/useChosenDate";
 import { Calendar } from "@fullcalendar/core";
+import { EventClickModal } from "../Modals/EventClickModal";
+import { useOpenModal } from "@/hook/useOpenModal";
 
 export function Schedule() {
   const calendarRef = useRef<Calendar | null>(null);
+  const { openModal, setOpenModal } = useOpenModal()
   const [value, setValue] = useState<Date>();
 
   const { appointments } = useAppointments();
@@ -36,6 +39,16 @@ export function Schedule() {
     }
   }, [appointments, chosenDate]);
 
+  const eventClickValue = (e) => {
+    console.log(e)
+    setOpenModal(true)
+    return (
+      <div>Teste</div>
+    )
+  }
+  const handleDateClick = (arg) => {
+    alert(arg.dateStr)
+  }
   // Função para atualizar a data no calendário
 
   return (
@@ -55,8 +68,16 @@ export function Schedule() {
           editable={true}
           selectable={true}
           selectMirror={true}
+          dayMaxEventRows={true}
+          dayMaxEvents={true}
+          eventMaxStack={2}
+          moreLinkClick
+          eventClick={(e) => eventClickValue(e)} // Attach event click handler
+          dateClick={handleDateClick}
         />
       )}
+      <EventClickModal />
+
     </div>
   );
 }
