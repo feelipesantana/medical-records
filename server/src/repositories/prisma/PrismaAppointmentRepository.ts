@@ -5,6 +5,7 @@ import { format } from 'date-fns-tz'
 import { formatGetJustDate } from '../../utils/formatDate'
 
 export class PrismaAppointmentRepositor implements AppointmentRepository {
+  
   async create (data: Prisma.AppointmentUncheckedCreateInput): Promise<Appointment> {
     const createAppointment = await prisma.appointment.create({
       data: {
@@ -67,5 +68,16 @@ export class PrismaAppointmentRepositor implements AppointmentRepository {
     })
 
     return findAppointments
+  }
+
+  async delete(id: string):Promise<Appointment[] | null>{
+    const deleteAppointment = await prisma.appointment.delete({
+      where:{
+        id
+      }
+    })
+
+    const newAppointmentAvailable = await this.findAll();
+    return newAppointmentAvailable
   }
 }

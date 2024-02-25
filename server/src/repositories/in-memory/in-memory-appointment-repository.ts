@@ -71,4 +71,13 @@ export class InMemoryAppointmentRepository implements AppointmentRepository {
     
     return overlappingAppointments
   }
+
+  async delete(id: string): Promise<Appointment[]>{
+
+    
+    const newArrayOfAppointments =  this.items.filter((appointment) => appointment.id !==  id )
+    
+    return newArrayOfAppointments
+
+  }
 }
