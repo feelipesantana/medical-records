@@ -36,15 +36,13 @@ export function Schedule() {
   const [events, setEvents] = useState<any[]>([]);
 
   useEffect(() => {
+
     if (calendarRef.current) {
       calendarRef.current.getApi().gotoDate(chosenDate); // Atualiza para a data selecionada
+
     }
 
-  }, [chosenDate]);
-
-  useEffect(() => {
-    console.log("Entrou auqi ")
-    if (appointments && appointments.length > 0 && chosenDate) {
+    if (appointments && chosenDate) {
       const newEvents = appointments.map((res, index) => ({
         id: res.id,
         title: res.patientId,
