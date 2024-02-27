@@ -1,7 +1,7 @@
 "use client";
 
 import { CalendarIcon } from "lucide-react";
-import { ReactNode, useState } from "react";
+import { ReactNode, useRef, useState } from "react";
 import { api } from "@/services/api";
 import { format } from "date-fns-tz";
 import { Button } from "../ui/button";
@@ -30,6 +30,7 @@ import { useEventModal } from "@/hook/useEventModal";
 import { deleteAppointment } from "@/api/delete-appointment";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "../ui/use-toast";
+import { Calendar } from "@fullcalendar/core";
 
 interface CreateAppointmentProps {
   children: ReactNode;
@@ -37,17 +38,20 @@ interface CreateAppointmentProps {
 
 export function EventClickModal() {
   const { openModal, setOpenModal, eventId } = useEventModal()
+  const calendarRef = useRef<Calendar | null>(null);
 
   const queryClient = useQueryClient()
+
   async function handleDeleteAppointment() {
     const response = await deleteAppointment({ eventId })
-    if (response?.status === 202) {
+    if (response && response.status === 202) {
       queryClient.invalidateQueries({ queryKey: ['appointments'] })
 
       toast({
         title: "Consulta deletada com sucesso!",
         description: `A consulta com o id ${eventId} foi deletada com sucesso`
       })
+      setOpenModal(false)
 
     }
   }

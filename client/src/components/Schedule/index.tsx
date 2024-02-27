@@ -10,9 +10,24 @@ import { useChosenDate } from "@/hook/useChosenDate";
 import { Calendar } from "@fullcalendar/core";
 import { EventClickModal } from "../Modals/EventClickModal";
 import { useEventModal } from "@/hook/useEventModal";
+import {
+  EventApi,
+  DateSelectArg,
+  EventClickArg,
+  EventContentArg,
+  formatDate,
+  AllDayContentArg
+} from '@fullcalendar/core'
+
+
+interface DemoAppState {
+  weekendsVisible: boolean
+  currentEvents: EventApi[]
+}
+
 
 export function Schedule() {
-  const calendarRef = useRef<Calendar | null>(null);
+  const calendarRef = useRef<FullCalendar | null>(null)
   const { openModal, setOpenModal, setEventId } = useEventModal()
   const [value, setValue] = useState<Date>();
 
@@ -24,9 +39,11 @@ export function Schedule() {
     if (calendarRef.current) {
       calendarRef.current.getApi().gotoDate(chosenDate); // Atualiza para a data selecionada
     }
+
   }, [chosenDate]);
 
   useEffect(() => {
+    console.log("Entrou auqi ")
     if (appointments && appointments.length > 0 && chosenDate) {
       const newEvents = appointments.map((res, index) => ({
         id: res.id,
@@ -37,6 +54,8 @@ export function Schedule() {
       }));
 
       setEvents(newEvents);
+      // calendarRef.current?
+
     }
   }, [appointments, chosenDate]);
 
@@ -50,7 +69,7 @@ export function Schedule() {
   // Função para atualizar a data no calendário
 
   return (
-    <div className="mt-2 calendar-container p-10 overflow-y-auto w-full h-full text-base border-none">
+    <div className=" calendar-container mt-2  p-10 overflow-y-auto w-full h-full text-base border-none">
       {chosenDate && (
         <FullCalendar
           plugins={[timeGridPlugin, interactionPlugin]}
@@ -69,9 +88,16 @@ export function Schedule() {
           dayMaxEventRows={true}
           dayMaxEvents={true}
           eventMaxStack={2}
-          moreLinkClick
           eventClick={(e) => eventClickValue(e)} // Attach event click handler
           dateClick={handleDateClick}
+          eventContent={(eventInfo) => {
+            return (
+              <>
+                <b>{eventInfo.timeText}</b>
+                <i>{eventInfo.event.title}</i>
+              </>
+            );
+          }}
         />
       )}
       <EventClickModal />
