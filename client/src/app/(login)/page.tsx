@@ -1,8 +1,8 @@
 "use client";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { FieldValues, useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 import z from "zod";
 
 import { Button } from "@/components/ui/button";
@@ -15,8 +15,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useState } from "react";
 import { Loader2 } from "lucide-react";
+import { useState } from "react";
 
 const schemaFormZod = z.object({
   email: z
@@ -81,7 +81,7 @@ export default function Login() {
               <FormItem>
                 <FormLabel>Email</FormLabel>
                 <FormControl>
-                  <Input type="email" {...field} />
+                  <Input className="cy-email" type="email" {...field} />
                 </FormControl>
 
                 <FormMessage />
@@ -95,7 +95,7 @@ export default function Login() {
               <FormItem>
                 <FormLabel>Password</FormLabel>
                 <FormControl>
-                  <Input type="password" {...field} />
+                  <Input className="cy-pass" type="password" {...field} />
                 </FormControl>
 
                 <FormMessage />
@@ -119,7 +119,9 @@ export default function Login() {
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
             </Button>
           ) : (
-            <Button type="submit">Logar</Button>
+            <Button type="submit" className="cy-logar">
+              Logar
+            </Button>
           )}
         </form>
       </Form>
